@@ -8,6 +8,10 @@
 
 class State;
 
+struct appSettings {
+    string file_path; /** Location of the test file. */
+};
+
 class App
 {
 public:
@@ -26,6 +30,12 @@ public:
    Agency* getAgency() const;
 
    /**
+    * Get the app current settings.
+    * @return Struct appSettings with all current settings.
+    */
+   struct appSettings getSettings() const;
+
+   /**
     * Change the app's current state.
     * @param state Any state derived class.
     */
@@ -34,6 +44,7 @@ public:
 private:
    Agency* agency;
    State* state;
+   struct appSettings settings;
 };
 
 

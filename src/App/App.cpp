@@ -2,7 +2,8 @@
 
 App::App()
 {
-    agency = new Agency();
+    settings.file_path = "../data/in01.txt";
+    agency = new Agency(settings.file_path);
 }
 
 void App::run()
@@ -18,6 +19,9 @@ Agency* App::getAgency() const
     return agency;
 }
 
+struct appSettings App::getSettings() const {
+    return settings;
+}
 
 void App::setState(State* state)
 {
