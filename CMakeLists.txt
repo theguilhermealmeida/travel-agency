@@ -8,6 +8,9 @@ set(CREATE_EXE TRUE)
 set(SOURCE_FILES
         src/Agency/Agency.cpp
         src/Agency/Agency.h
+        src/Agency/Graph.cpp
+        src/Agency/Graph.h
+        src/Agency/minHeap.h
 
         src/App/App.cpp
         src/App/App.h
