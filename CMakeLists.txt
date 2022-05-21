@@ -16,6 +16,8 @@ set(SOURCE_FILES
         src/App/App.h
         src/App/InitialState.cpp
         src/App/InitialState.h
+        src/App/SettingsState.cpp
+        src/App/SettingsState.h
         src/App/State.cpp
         src/App/State.h
         )

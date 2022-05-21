@@ -9,7 +9,7 @@
 class State;
 
 struct appSettings {
-    string file_path;
+    string file_path; /** Location of the test file. */
 };
 
 class App
@@ -28,6 +28,12 @@ public:
     * @return Pointer to the app's Agency.
     */
    Agency* getAgency() const;
+
+   /**
+    * Get the app current settings.
+    * @return Struct appSettings with all current settings.
+    */
+   struct appSettings getSettings() const;
 
    /**
     * Change the app's current state.

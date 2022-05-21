@@ -5,29 +5,37 @@ Graph::Graph(const int& size) : nodes(size + 1) {
 }
 
 Graph::Graph(const string &file_path) {
-    int src, dest, capacity, duration;
+    int src, dest, capacity, duration, line = 1;
     string row, word;
     stringstream str;
     ifstream file(file_path);
-    if (!file.is_open()) return;
+    if (!file.is_open()) {
+        cout << "Unable to open file " << file_path << endl;
+        return;
+    }
 
-    str = stringstream(row);
-    getline(str, word, ' ');
-    this->size = stoi(word);
-    nodes.resize(size + 1);
+    try {
+        getline(file, row);
+        str = stringstream(row);
+        getline(str, word, ' ');
+        this->size = stoi(word);
+        nodes.resize(size + 1);
 
-    while (getline(file, row))
-    {
-        str = stringstream (row);
-        getline(str, word, ' ');
-        src = stoi(word);
-        getline(str, word, ' ');
-        dest = stoi(word);
-        getline(str, word, ' ');
-        capacity = stoi(word);
-        getline(str, word, ' ');
-        duration = stoi(word);
-        addEdge(src, dest, capacity, duration);
+        while (getline(file, row)) {
+            line++;
+            str = stringstream(row);
+            getline(str, word, ' ');
+            src = stoi(word);
+            getline(str, word, ' ');
+            dest = stoi(word);
+            getline(str, word, ' ');
+            capacity = stoi(word);
+            getline(str, word, ' ');
+            duration = stoi(word);
+            addEdge(src, dest, capacity, duration);
+        }
+    } catch (invalid_argument) {
+        cout << "Error in the test file. Line " << line << ".\n";
     }
 }
 
