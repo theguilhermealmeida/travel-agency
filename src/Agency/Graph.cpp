@@ -4,6 +4,33 @@ Graph::Graph(const int& size) : nodes(size + 1) {
     this->size = size;
 }
 
+Graph::Graph(const string &file_path) {
+    int src, dest, capacity, duration;
+    string row, word;
+    stringstream str;
+    ifstream file(file_path);
+    if (!file.is_open()) return;
+
+    str = stringstream(row);
+    getline(str, word, ' ');
+    this->size = stoi(word);
+    nodes.resize(size + 1);
+
+    while (getline(file, row))
+    {
+        str = stringstream (row);
+        getline(str, word, ' ');
+        src = stoi(word);
+        getline(str, word, ' ');
+        dest = stoi(word);
+        getline(str, word, ' ');
+        capacity = stoi(word);
+        getline(str, word, ' ');
+        duration = stoi(word);
+        addEdge(src, dest, capacity, duration);
+    }
+}
+
 void Graph::addEdge(const int& src, const int& dest, const int& capacity, const int& duration)
 {
     if (src < 1 || src > size || dest < 1 || dest > size) return;

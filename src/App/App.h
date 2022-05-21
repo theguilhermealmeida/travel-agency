@@ -8,6 +8,10 @@
 
 class State;
 
+struct appSettings {
+    string file_path;
+};
+
 class App
 {
 public:
@@ -34,6 +38,7 @@ public:
 private:
    Agency* agency;
    State* state;
+   struct appSettings settings;
 };
 
 

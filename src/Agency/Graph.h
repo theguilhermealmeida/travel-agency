@@ -10,6 +10,8 @@
 #include <iostream>
 #include <climits>
 #include <algorithm>
+#include <fstream>
+#include <sstream>
 
 #include "minHeap.h"
 
@@ -28,6 +30,12 @@ public:
     * @param size The number of nodes.
     */
    Graph(const int& size);
+
+   /**
+    * Constructs a graph from a txt file.
+    * @param file_path Path to an appropriate file to be loaded.
+    */
+   Graph(const string& file_path);
 
    /**
     * Add an edge to the graph in O(1) time complexity.
