@@ -109,6 +109,31 @@ vector<int> Graph::dijkstraPath(const int &src, const int &dest) {
     return getPath(src, dest);
 }
 
+vector<int> Graph::minmaxPath(const int &src, const int &dest) {
+    for (int i=1;i<=size;i++){
+        nodes[i].distance = -1;
+        nodes[i].visited = false;
+        nodes[i].predecessor = 0;
+    }
+    nodes[src].distance = INT_MAX;
+    priority_queue<intPair, vector<intPair>, less<intPair>> h;
+    h.push({nodes[src].distance, src});
+    while(h.size() > 0){
+        int u = h.top().second;
+        h.pop();
+        nodes[u].visited = true;
+        for (Edge e: nodes[u].adj){
+            int min_dist = min(nodes[u].distance, e.capacity);
+            if (!nodes[e.dest].visited && min_dist > nodes[e.dest].distance) {
+                nodes[e.dest].distance = min_dist;
+                nodes[e.dest].predecessor = u;
+                h.push({nodes[e.dest].distance, e.dest});
+            }
+        }
+    }
+    return getPath(src, dest);
+}
+
 vector<int> Graph::getPath(const int& src, int dest)
 {
     if (nodes[dest].predecessor == 0) return {};

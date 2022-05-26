@@ -17,6 +17,8 @@
 
 using namespace std;
 
+typedef pair<int, int> intPair;
+
 class Graph {
 
 public:
@@ -71,6 +73,15 @@ public:
     * @return A vector of integers that represent a path from src to dest.
     */
    vector<int> dijkstraPath(const int& src, const int& dest);
+
+   /**
+    * Uses a variation of the algorithm of Dijkstra to find the path with maximum capacity.
+    * The algorithm of Dijkstra's time complexity is O(E log|V|).
+    * @param src The starting node.
+    * @param dest The destination node.
+    * @return A vector of integers that represent a path from src to dest.
+    */
+   vector<int> minmaxPath(const int& src, const int& dest);
 
 private:
    /**

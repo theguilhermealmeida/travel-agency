@@ -24,6 +24,7 @@ set(SOURCE_FILES
 
 
 set(TEST_FILES
+        tests/TestScenario1.cpp
         )
 
 include_directories(src)

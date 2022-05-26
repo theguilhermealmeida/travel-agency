@@ -15,6 +15,12 @@ public:
     * @param file_path The path to a proper file with the network information.
     */
    Agency(const string& file_path);
+
+   /**
+    * Scenario 1.1 - Maximize the group dimension when the group stays together.
+    * @return Vector of the taken path (integers).
+    */
+   vector<int> scenario11();
 private:
    Graph network;
 
