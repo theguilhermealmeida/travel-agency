@@ -54,7 +54,7 @@ bool Graph::connected(const int &src, const int &dest)
     return false;
 }
 
-vector<int> Graph::bfsPath(const int& src, const int& dest)
+vector<Trip> Graph::bfsPath(const int& src, const int& dest)
 {
     for (int v=1; v <= size; v++) {
         nodes[v].visited = false;
@@ -81,7 +81,7 @@ vector<int> Graph::bfsPath(const int& src, const int& dest)
     return getPath(src, dest);
 }
 
-vector<int> Graph::dijkstraPath(const int &src, const int &dest) {
+vector<Trip> Graph::dijkstraPath(const int &src, const int &dest) {
     for (int i=1;i<=size;i++){
         nodes[i].distance = INT_MAX;
         nodes[i].visited = false;
@@ -109,7 +109,7 @@ vector<int> Graph::dijkstraPath(const int &src, const int &dest) {
     return getPath(src, dest);
 }
 
-vector<int> Graph::minmaxPath(const int &src, const int &dest) {
+vector<Trip> Graph::minmaxPath(const int &src, const int &dest) {
     for (int i=1;i<=size;i++){
         nodes[i].distance = -1;
         nodes[i].visited = false;
@@ -134,8 +134,29 @@ vector<int> Graph::minmaxPath(const int &src, const int &dest) {
     return getPath(src, dest);
 }
 
-vector<int> Graph::getPath(const int& src, int dest)
+vector<Trip> Graph::getPath(const int& src, int dest)
 {
+    vector<Trip> path_result;
+    vector<int> path_nodes= getPathNodes(src, dest);
+
+    for (int i = 0; i < path_nodes.size(); i++) {
+        for (auto e: nodes[path_nodes[i]].adj) {
+            if (e.dest == path_nodes[i + 1]) {
+                Trip trip;
+                trip.src = path_nodes[i];
+                trip.dest = e.dest;
+                trip.duration = e.duration;
+                trip.capacity = e.capacity;
+                path_result.push_back(trip);
+                break;
+            }
+        }
+    }
+    return path_result;
+}
+
+vector<int> Graph::getPathNodes(const int& src, int dest) {
+
     if (nodes[dest].predecessor == 0) return {};
     vector<int> path;
     do {
@@ -145,3 +166,31 @@ vector<int> Graph::getPath(const int& src, int dest)
     reverse(path.begin(), path.end());
     return path;
 }
+
+int Graph::comparePaths(vector<Trip> s11, vector<Trip> s12)
+{
+    if (getPathCapacity(s11) >= getPathCapacity(s12)
+    && getPathTranshipments(s11) <= getPathTranshipments(s12)) return 1;
+
+    if (getPathCapacity(s12) > getPathCapacity(s11)
+        && getPathTranshipments(s12) < getPathTranshipments(s11)) return 2;
+
+    return 0;
+}
+
+int Graph::getPathCapacity(vector<Trip> path)
+{
+    int capacity;
+    for (int t = 0; t < path.size(); t++) {
+        if (t == 0) capacity = path[t].capacity;
+        else if (path[t].capacity < capacity) capacity = path[t].capacity;
+    }
+    return capacity;
+}
+
+int Graph::getPathTranshipments(vector<Trip> path)
+{
+    return path.size();
+}
+
+

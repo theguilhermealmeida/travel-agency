@@ -19,6 +19,18 @@ using namespace std;
 
 typedef pair<int, int> intPair;
 
+struct Trip {
+    int src;
+    int dest;
+    int capacity;
+    int duration;
+
+    bool operator == (const Trip &trip) const
+    {
+        return (src == trip.src && dest == trip.dest);
+    }
+};
+
 class Graph {
 
 public:
@@ -63,7 +75,7 @@ public:
     * @param dest The destination node.
     * @return A vector of integers that represent a path from src to dest.
     */
-   vector<int> bfsPath(const int& src, const int& dest);
+   vector<Trip> bfsPath(const int& src, const int& dest);
 
    /**
     * Uses the algorithm of Dijkstra to find the shortest path (less distance).
@@ -72,7 +84,7 @@ public:
     * @param dest The destination node.
     * @return A vector of integers that represent a path from src to dest.
     */
-   vector<int> dijkstraPath(const int& src, const int& dest);
+   vector<Trip> dijkstraPath(const int& src, const int& dest);
 
    /**
     * Uses a variation of the algorithm of Dijkstra to find the path with maximum capacity.
@@ -81,31 +93,48 @@ public:
     * @param dest The destination node.
     * @return A vector of integers that represent a path from src to dest.
     */
-   vector<int> minmaxPath(const int& src, const int& dest);
+   vector<Trip> minmaxPath(const int& src, const int& dest);
+
+
+
+    /**
+     * Checks which path solution is better.
+     * @param s11 first path solution.
+     * @param s12 second path solution.
+     * @return Returns '0' if pareto-optimal (non comparable). '1' if first solution is better, '2' if second solution is better.
+     */
+    int comparePaths(vector<Trip> s11, vector<Trip> s12);
 
 private:
+
    /**
     * Makes a path vector from each node's predecessor. Time complexity is O(n).
     * @param src The starting node.
     * @param dest The destination node.
     * @return Returns a vector of the path taken from src to dest.
     */
-   vector<int> getPath(const int& src, int dest);
+   vector<Trip> getPath(const int& src, int dest);
 
-   struct Edge {
+   vector<int> getPathNodes(const int& src, int dest);
+    int getPathCapacity(vector<Trip> path);
+
+    int getPathTranshipments(vector<Trip> path);
+
+    struct Edge {
        int dest;
        int capacity;
        int duration;
    };
 
-   struct Node {
+    struct Node {
        list<Edge> adj;
        bool visited;
        int distance;
        int predecessor;
    };
 
-   vector<Node> nodes;
+    vector<Node> nodes;
+
    int size;
 };
 

@@ -20,12 +20,16 @@ set(SOURCE_FILES
         src/App/SettingsState.h
         src/App/State.cpp
         src/App/State.h
+        src/App/ChooseSceneryState.cpp
+        src/App/ChooseSceneryState.h
+        src/App/Scenery1State.cpp
+        src/App/Scenery1State.h
         )
 
 
 set(TEST_FILES
         tests/TestScenario1.cpp
-        )
+        src/App/Scenery1State.cpp src/App/Scenery1State.h src/App/ChooseSceneryState.cpp src/App/ChooseSceneryState.h)
 
 include_directories(src)
 
