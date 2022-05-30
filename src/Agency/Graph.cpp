@@ -81,6 +81,33 @@ vector<int> Graph::bfsPath(const int& src, const int& dest)
     return getPath(src, dest);
 }
 
+vector<int> Graph::bfsResidualPath(const int& src, const int& dest)
+{
+    for (int v=1; v <= size; v++) {
+        nodes[v].visited = false;
+        nodes[v].predecessor = 0;
+    }
+    queue<int> q;
+    q.push(src);
+    nodes[src].visited = true;
+    nodes[src].distance = 0;
+    while (!q.empty())
+    {
+        int u = q.front(); q.pop();
+        for (auto e : nodes[u].residual_adj)
+        {
+            int w = e.dest;
+            if (!nodes[w].visited) {
+                q.push(w);
+                nodes[w].visited = true;
+                nodes[w].distance = nodes[u].distance + 1;
+                nodes[w].predecessor = u;
+            }
+        }
+    }
+    return getPath(src, dest);
+}
+
 vector<int> Graph::dijkstraPath(const int &src, const int &dest) {
     for (int i=1;i<=size;i++){
         nodes[i].distance = INT_MAX;
@@ -132,6 +159,23 @@ vector<int> Graph::minmaxPath(const int &src, const int &dest) {
         }
     }
     return getPath(src, dest);
+}
+
+int Graph::maxFlow(const int &src, const int &dest) {
+    int max_flow = 0;
+    vector<int> path;
+    for (int i = 1; i<= size; i++) {
+        nodes[i].residual_adj.clear();
+        nodes[i].residual_adj = nodes[i].adj;
+    }
+    while (!(path = bfsResidualPath(src, dest)).empty()) {
+        int path_flow = 0;
+        for (int n : path) {
+            //path_flow += min(nodes[n].ca)
+            //TODO é melhor ter struct do caminho para poder sacar as edges
+        }
+    }
+    return max_flow;
 }
 
 vector<int> Graph::getPath(const int& src, int dest)

@@ -66,6 +66,15 @@ public:
    vector<int> bfsPath(const int& src, const int& dest);
 
    /**
+    * Uses breadth-first search to find the shortest path (less nodes) in the residual graph.
+    * The bfs' time complexity is O(V + E) and after that its O(n) to get the path.
+    * @param src The starting node.
+    * @param dest The destination node.
+    * @return A vector of integers that represent a path from src to dest.
+    */
+   vector<int> bfsResidualPath(const int& src, const int& dest);
+
+   /**
     * Uses the algorithm of Dijkstra to find the shortest path (less distance).
     * The algorithm of Dijkstra's time complexity is O(E log|V|).
     * @param src The starting node.
@@ -82,6 +91,8 @@ public:
     * @return A vector of integers that represent a path from src to dest.
     */
    vector<int> minmaxPath(const int& src, const int& dest);
+
+   int maxFlow(const int& src, const int& dest));
 
 private:
    /**
@@ -100,6 +111,7 @@ private:
 
    struct Node {
        list<Edge> adj;
+       list<Edge> residual_adj;
        bool visited;
        int distance;
        int predecessor;
