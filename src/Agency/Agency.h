@@ -18,18 +18,17 @@ public:
 
    /**
     * Scenario 1.1 - Maximize the group dimension when the group stays together.
-    * @return Vector of the taken path (integers).
+    * @retun Path object with chosen path for this scenario.
     */
-   vector<Trip> scenario11();
+   Path scenario11();
 
    /**
     * Scenario 1.2 - Maximize the group dimension and minimize number of transhipments.
-    * @return 2D vector with pareto-optimal solutions.
+    * @return //TODO
     */
-   vector<vector<Trip>> scenario12();
+   pair<Path, Path> scenario12();
 
 private:
-
    Graph network;
 };
 

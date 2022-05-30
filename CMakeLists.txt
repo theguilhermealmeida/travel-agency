@@ -11,6 +11,8 @@ set(SOURCE_FILES
         src/Agency/Graph.cpp
         src/Agency/Graph.h
         src/Agency/minHeap.h
+        src/Agency/Path.cpp
+        src/Agency/Path.h
 
         src/App/App.cpp
         src/App/App.h

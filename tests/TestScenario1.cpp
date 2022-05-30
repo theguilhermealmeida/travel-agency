@@ -4,13 +4,6 @@
 
 using testing::Eq;
 
-/*
-
-   /
- 1
-
- */
-
 TEST(scenario1, scenario11)
 {
     Agency agency("../data/test.txt");

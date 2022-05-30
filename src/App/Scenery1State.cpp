@@ -19,7 +19,7 @@ void Scenery1State::step(App *app) {
                 display11(app);
                 return;
             case 2:
-                display12(app);
+                //display12(app);
                 return;
             default:
                 printInvalidOption();
@@ -30,22 +30,26 @@ void Scenery1State::step(App *app) {
 void Scenery1State::display11(App *app) {
     printBreak();
 
-    vector<Trip> path = app->getAgency()->scenario11();
+    Path path = app->getAgency()->scenario11();
 
     std::cout << "Scenery 1.1 - Maximize group dimension\n\n";
-    for (auto t: path) {
-        cout << t.src << " ------------> " << t.dest << "\n";
-        cout << "   capacity: " << t.capacity << "\n";
-        cout << "   duration: " << t.duration << "\n\n";
-    }
-    cout << "\n1) Go back.\n";
+    path.printInfo();
+    cout << "\n2) Display trips.\n";
+    cout << "1) Go back.\n";
+    cout << "0) Exit.\n";
 
     while (true)
     {
         int option = readOption(app);
 
         switch (option) {
+            case 2:
+                displayTrips(app, path);
+                return;
             case 1:
+                return;
+            case 0:
+                app->setState(nullptr);
                 return;
             default:
                 printInvalidOption();
@@ -54,7 +58,7 @@ void Scenery1State::display11(App *app) {
 
 }
 
-void Scenery1State::display12(App *app) {
+/*void Scenery1State::display12(App *app) {
     printBreak();
 
     vector<vector<Trip>> paths = app->getAgency()->scenario12();
@@ -85,4 +89,5 @@ void Scenery1State::display12(App *app) {
     }
 
 }
+ */
 

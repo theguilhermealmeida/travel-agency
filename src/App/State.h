@@ -58,6 +58,13 @@ protected:
     */
    void displayTable(std::vector<std::vector<std::string> >& table, int page) const;
 
+   /**
+    * Go to a separate page that displays all the trips from the same path.
+    * @param app Pointer to main application.
+    * @param path Path object to be displayed.
+    */
+   void displayTrips(App* app, const Path& path);
+
 private:
    /**
     * Get the next page for a table display.
