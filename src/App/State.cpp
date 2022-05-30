@@ -95,5 +95,28 @@ void State::getNextPage(App* app, int& page, const int& max_page) const {
             app->setState(nullptr);
             return;
     }
+}
 
+void State::displayTrips(App* app, const Path &path) {
+    printBreak();
+    path.printTrips();
+
+    cout << endl;
+    cout << "1) Go back\n";
+    cout << "0) Exit\n";
+
+    while (true)
+    {
+        int option = readOption(app);
+
+        switch (option) {
+            case 1:
+                return;
+            case 0:
+                app->setState(nullptr);
+                return;
+            default:
+                printInvalidOption();
+        }
+    }
 }

@@ -14,6 +14,7 @@
 #include <sstream>
 
 #include "minHeap.h"
+#include "Path.h"
 
 using namespace std;
 
@@ -61,51 +62,68 @@ public:
     * The bfs' time complexity is O(V + E) and after that its O(n) to get the path.
     * @param src The starting node.
     * @param dest The destination node.
-    * @return A vector of integers that represent a path from src to dest.
+    * @return A Path object with the path taken by BFS.
     */
-   vector<int> bfsPath(const int& src, const int& dest);
+   Path bfsPath(const int& src, const int& dest);
 
    /**
     * Uses the algorithm of Dijkstra to find the shortest path (less distance).
     * The algorithm of Dijkstra's time complexity is O(E log|V|).
     * @param src The starting node.
     * @param dest The destination node.
-    * @return A vector of integers that represent a path from src to dest.
+    * @return A Path object with the path from src to dest.
     */
-   vector<int> dijkstraPath(const int& src, const int& dest);
+   Path dijkstraPath(const int& src, const int& dest);
 
    /**
     * Uses a variation of the algorithm of Dijkstra to find the path with maximum capacity.
     * The algorithm of Dijkstra's time complexity is O(E log|V|).
     * @param src The starting node.
     * @param dest The destination node.
-    * @return A vector of integers that represent a path from src to dest.
+    * @return A Path object that represent a path from src to dest.
     */
-   vector<int> minmaxPath(const int& src, const int& dest);
+   Path minmaxPath(const int& src, const int& dest);
+
+    /**
+     * Checks which path solution is better.
+     * @param s11 first path solution.
+     * @param s12 second path solution.
+     * @return Returns '0' if pareto-optimal (non comparable). '1' if first solution is better, '2' if second solution is better.
+     */
+    int comparePaths(vector<Trip> s11, vector<Trip> s12);
 
 private:
+
+   //TODO path can be calculated during the algorithms, saving a lot of time
    /**
     * Makes a path vector from each node's predecessor. Time complexity is O(n).
     * @param src The starting node.
     * @param dest The destination node.
     * @return Returns a vector of the path taken from src to dest.
     */
-   vector<int> getPath(const int& src, int dest);
+   Path getPath(const int& src, int dest);
 
-   struct Edge {
+
+   vector<int> getPathNodes(const int& src, int dest);
+    int getPathCapacity(vector<Trip> path);
+
+    int getPathTranshipments(vector<Trip> path);
+
+    struct Edge {
        int dest;
        int capacity;
        int duration;
    };
 
-   struct Node {
+    struct Node {
        list<Edge> adj;
        bool visited;
        int distance;
        int predecessor;
    };
 
-   vector<Node> nodes;
+    vector<Node> nodes;
+
    int size;
 };
 
