@@ -54,7 +54,7 @@ bool Graph::connected(const int &src, const int &dest)
     return false;
 }
 
-vector<int> Graph::bfsPath(const int& src, const int& dest)
+Path Graph::bfsPath(const int& src, const int& dest)
 {
     for (int v=1; v <= size; v++) {
         nodes[v].visited = false;
@@ -81,34 +81,7 @@ vector<int> Graph::bfsPath(const int& src, const int& dest)
     return getPath(src, dest);
 }
 
-vector<int> Graph::bfsResidualPath(const int& src, const int& dest)
-{
-    for (int v=1; v <= size; v++) {
-        nodes[v].visited = false;
-        nodes[v].predecessor = 0;
-    }
-    queue<int> q;
-    q.push(src);
-    nodes[src].visited = true;
-    nodes[src].distance = 0;
-    while (!q.empty())
-    {
-        int u = q.front(); q.pop();
-        for (auto e : nodes[u].residual_adj)
-        {
-            int w = e.dest;
-            if (!nodes[w].visited) {
-                q.push(w);
-                nodes[w].visited = true;
-                nodes[w].distance = nodes[u].distance + 1;
-                nodes[w].predecessor = u;
-            }
-        }
-    }
-    return getPath(src, dest);
-}
-
-vector<int> Graph::dijkstraPath(const int &src, const int &dest) {
+Path Graph::dijkstraPath(const int &src, const int &dest) {
     for (int i=1;i<=size;i++){
         nodes[i].distance = INT_MAX;
         nodes[i].visited = false;
@@ -136,7 +109,7 @@ vector<int> Graph::dijkstraPath(const int &src, const int &dest) {
     return getPath(src, dest);
 }
 
-vector<int> Graph::minmaxPath(const int &src, const int &dest) {
+Path Graph::minmaxPath(const int &src, const int &dest) {
     for (int i=1;i<=size;i++){
         nodes[i].distance = -1;
         nodes[i].visited = false;
@@ -162,24 +135,71 @@ vector<int> Graph::minmaxPath(const int &src, const int &dest) {
 }
 
 int Graph::maxFlow(const int &src, const int &dest) {
+    vector<vector<int> > residual(size + 1, vector<int> (size +1));
     int max_flow = 0;
     vector<int> path;
     for (int i = 1; i<= size; i++) {
-        nodes[i].residual_adj.clear();
-        nodes[i].residual_adj = nodes[i].adj;
-    }
-    while (!(path = bfsResidualPath(src, dest)).empty()) {
-        int path_flow = 0;
-        for (int n : path) {
-            //path_flow += min(nodes[n].ca)
-            //TODO é melhor ter struct do caminho para poder sacar as edges
+        for (auto e: nodes[i].adj) {
+            residual[i][e.dest] = e.capacity;
         }
+    }
+    while (!(path = bfsAdjacencyPath(src, dest, residual)).empty()) {
+        int path_flow = INT_MAX;
+        for (int i = 0; i < path.size() - 1; i++) {
+            path_flow = min(path_flow, residual[path[i]][path[i + 1]]);
+        }
+        for (int i = 0; i < path.size() - 1; i++) {
+            residual[path[i]][path[i + 1]] -= path_flow;
+            residual[path[i + 1]][path[i]] += path_flow;
+        }
+        max_flow += path_flow;
     }
     return max_flow;
 }
 
-vector<int> Graph::getPath(const int& src, int dest)
+vector<int> Graph::bfsAdjacencyPath(const int& src, const int& dest, vector<vector<int> > graph)
 {
+    vector<int> path;
+    for (int v=1; v <= size; v++) {
+        nodes[v].visited = false;
+        nodes[v].predecessor = 0;
+    }
+    queue<int> q;
+    q.push(src);
+    nodes[src].visited = true;
+    while (!q.empty())
+    {
+        int u = q.front(); q.pop();
+        for (int i = 1; i <= size; i++)
+        {
+            if (graph[u][i] == 0) continue;
+            if (!nodes[i].visited) {
+                q.push(i);
+                nodes[i].visited = true;
+                nodes[i].predecessor = u;
+            }
+        }
+    }
+    return getPathNodes(src, dest);
+}
+
+Path Graph::getPath(const int& src, int dest)
+{
+    Path path;
+    vector<int> path_nodes= getPathNodes(src, dest);
+
+    for (int i = 0; i < path_nodes.size(); i++) {
+        for (auto e: nodes[path_nodes[i]].adj) {
+            if (e.dest == path_nodes[i + 1]) {
+                path.addTrip({path_nodes[i], e.dest, e.capacity, e.duration});
+                break;
+            }
+        }
+    }
+    return path;
+}
+
+vector<int> Graph::getPathNodes(const int& src, int dest) {
     if (nodes[dest].predecessor == 0) return {};
     vector<int> path;
     do {
@@ -189,3 +209,30 @@ vector<int> Graph::getPath(const int& src, int dest)
     reverse(path.begin(), path.end());
     return path;
 }
+
+int Graph::comparePaths(vector<Trip> s11, vector<Trip> s12)
+{
+    if (getPathCapacity(s11) >= getPathCapacity(s12)
+    && getPathTranshipments(s11) <= getPathTranshipments(s12)) return 1;
+
+    if (getPathCapacity(s12) > getPathCapacity(s11)
+        && getPathTranshipments(s12) < getPathTranshipments(s11)) return 2;
+    return 0;
+}
+
+int Graph::getPathCapacity(vector<Trip> path)
+{
+    int capacity;
+    for (int t = 0; t < path.size(); t++) {
+        if (t == 0) capacity = path[t].capacity;
+        else if (path[t].capacity < capacity) capacity = path[t].capacity;
+    }
+    return capacity;
+}
+
+int Graph::getPathTranshipments(vector<Trip> path)
+{
+    return path.size();
+}
+
+

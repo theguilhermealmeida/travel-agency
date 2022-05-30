@@ -11,6 +11,8 @@ set(SOURCE_FILES
         src/Agency/Graph.cpp
         src/Agency/Graph.h
         src/Agency/minHeap.h
+        src/Agency/Path.cpp
+        src/Agency/Path.h
 
         src/App/App.cpp
         src/App/App.h
@@ -20,12 +22,16 @@ set(SOURCE_FILES
         src/App/SettingsState.h
         src/App/State.cpp
         src/App/State.h
+        src/App/ChooseSceneryState.cpp
+        src/App/ChooseSceneryState.h
+        src/App/Scenery1State.cpp
+        src/App/Scenery1State.h
         )
 
 
 set(TEST_FILES
-        tests/TestScenario1.cpp
-        )
+        tests/TestFulkerson.cpp
+        tests/TestScenario1.cpp)
 
 include_directories(src)
 
