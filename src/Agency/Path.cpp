@@ -3,7 +3,7 @@
 Path::Path() {
     capacity = INT_MAX;
     duration = 0;
-    flow = 0;
+    flow = INT_MAX;
 }
 
 vector<Trip> Path::getTrips() const {

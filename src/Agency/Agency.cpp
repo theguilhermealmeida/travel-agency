@@ -34,8 +34,12 @@ pair<Path, Path> Agency::scenario12() {
      */
 }
 
-Path Agency::scenario21(const int& dimension) {
-    return network.maxFlow(1, 6, dimension);
+Path Agency::scenario21(const int& dimension, vector<vector<int> >& residual) {
+    return network.maxFlow(1, 6, residual, dimension);
+}
+
+Path Agency::scenario22(const int& dimension, vector<vector<int> >& residual, const int& flow) {
+    return network.maxFlowFromPath(1, 6, residual, flow, dimension);
 }
 
 Path Agency::scenario23() {

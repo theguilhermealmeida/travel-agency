@@ -15,6 +15,9 @@ void Scenery1State::step(App *app) {
         int option = readOption(app);
 
         switch (option) {
+            case 3:
+                app->setState(new ChooseSceneryState());
+                return;
             case 1:
                 display11(app);
                 return;

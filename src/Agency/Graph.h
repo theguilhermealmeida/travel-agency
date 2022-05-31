@@ -122,10 +122,11 @@ public:
     * @param src The starting node.
     * @param dest The destination node.
     * @param residual Already filled adjacency matrix. The flow will be calculated from this data.
+    * @param flow Current flow considering already filled path.
     * @param dimension Optional: The group's dimension. This acts as a delimiter.
     * @return Path with all the trips taken and respective flow.
     */
-   Path maxFlowFromPath(const int& src, const int& dest, vector<vector<int> >& residual, int dimension = INT_MAX);
+   Path maxFlowFromPath(const int& src, const int& dest, vector<vector<int> >& residual, int flow,int dimension = INT_MAX);
 
 private:
    /**

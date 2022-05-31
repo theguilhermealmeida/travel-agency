@@ -26,6 +26,7 @@ void ChooseSceneryState::step(App *app) {
                 return;
             default:
                 printInvalidOption();
+                break;
         }
     }
 }
