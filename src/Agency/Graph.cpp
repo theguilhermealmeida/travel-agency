@@ -141,7 +141,7 @@ Path Graph::maxFlow(const int &src, const int &dest, int dimension) {
             residual[i][e.dest] = e.capacity;
         }
     }
-    return maxFlowFromPath(src, dest, residual,  dimension);
+    return maxFlowFromPath(src, dest, residual, 0, dimension);
 }
 
 Path Graph::maxFlow(const int &src, const int &dest, vector<vector<int> >& residual, int dimension) {
