@@ -136,6 +136,15 @@ Path Graph::minmaxPath(const int &src, const int &dest) {
 
 int Graph::maxFlow(const int &src, const int &dest, int dimension) {
     vector<vector<int> > residual(size + 1, vector<int> (size +1));
+    return maxFlowFromPath(src, dest, residual, dimension);
+}
+
+int Graph::maxFlow(const int &src, const int &dest, vector<vector<int> >& residual, int dimension) {
+    residual = vector<vector<int> >(size + 1, vector<int> (size +1));
+    return maxFlowFromPath(src, dest, residual, dimension);
+}
+
+int Graph::maxFlowFromPath(const int &src, const int &dest, vector<vector<int> >& residual, int dimension) {
     int max_flow = 0;
     vector<int> path;
     for (int i = 1; i<= size; i++) {
@@ -144,7 +153,7 @@ int Graph::maxFlow(const int &src, const int &dest, int dimension) {
         }
     }
     while (!(path = bfsAdjacencyPath(src, dest, residual)).empty()
-                && max_flow < dimension) {
+           && max_flow < dimension) {
         int path_flow = INT_MAX;
         for (int i = 0; i < path.size() - 1; i++) {
             path_flow = min(path_flow, residual[path[i]][path[i + 1]]);

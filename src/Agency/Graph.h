@@ -93,15 +93,39 @@ public:
      */
     int comparePaths(vector<Trip> s11, vector<Trip> s12);
 
-    /**
-     * Get the maximum flow for the graph using the Ford-Fulkerson method.
-     * //TODO add time complexity
-     * @param src The starting node.
-     * @param dest The destination node.
-     * @param dimension Optional: The group's dimension. This acts as a delimiter.
-     * @return Integer value representing the maximum flow for the graph.
-     */
+   /**
+    * Get the maximum flow for the graph using the Ford-Fulkerson method.
+    * //TODO add time complexity
+    * @param src The starting node.
+    * @param dest The destination node.
+    * @param dimension Optional: The group's dimension. This acts as a delimiter.
+    * @return Integer value representing the maximum flow for the graph.
+    */
    int maxFlow(const int& src, const int& dest, int dimension = INT_MAX);
+
+   /**
+    * Get the maximum flow for the graph using the Ford-Fulkerson method.
+    * This method stores the residual graph in an adjacency matrix;
+    * //TODO add time complexity
+    * @param src The starting node.
+    * @param dest The destination node.
+    * @param residual Matrix of adjacency's where the residual graph will be stored.
+    * @param dimension Optional: The group's dimension. This acts as a delimiter.
+    * @return Integer value representing the maximum flow for the graph.
+    */
+   int maxFlow(const int& src, const int& dest, vector<vector<int> >& residual, int dimension = INT_MAX);
+
+   /**
+    * Get the maximum flow for the graph using the Ford-Fulkerson method and starting with an
+    * already filled residual graph.
+    * //TODO add time complexity
+    * @param src The starting node.
+    * @param dest The destination node.
+    * @param residual Already filled adjacency matrix. The flow will be calculated from this data.
+    * @param dimension Optional: The group's dimension. This acts as a delimiter.
+    * @return Integer value representing the maximum flow for the graph.
+    */
+   int maxFlowFromPath(const int& src, const int& dest, vector<vector<int> >& residual, int dimension = INT_MAX);
 
 private:
    /**
