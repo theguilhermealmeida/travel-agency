@@ -10,6 +10,7 @@ void Scenery1State::step(App *app) {
     std::cout << "3) Go back\n";
     std::cout << "0) Exit.\n";
 
+
     while (true)
     {
         int option = readOption(app);
@@ -30,7 +31,11 @@ void Scenery1State::step(App *app) {
 void Scenery1State::display11(App *app) {
     printBreak();
 
-    Path path = app->getAgency()->scenario11();
+    int src, dest;
+    chooseSrcDest(app, src, dest);
+    printBreak();
+
+    Path path = app->getAgency()->scenario11(src, dest);
 
     std::cout << "Scenery 1.1 - Maximize group dimension\n\n";
     path.printInfo();
@@ -90,4 +95,3 @@ void Scenery1State::display11(App *app) {
 
 }
  */
-

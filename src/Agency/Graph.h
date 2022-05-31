@@ -127,6 +127,11 @@ public:
     */
    Path maxFlowFromPath(const int& src, const int& dest, vector<vector<int> >& residual, int dimension = INT_MAX);
 
+    /**
+     * Returns size (number of nodes) of graph.
+     * @return Integer with the size of the graph.
+     */
+   int getSize();
 private:
    /**
     * Uses breadth-first search to find the shortest path (less nodes) in the residual graph.

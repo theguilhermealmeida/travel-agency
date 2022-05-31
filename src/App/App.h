@@ -42,8 +42,9 @@ public:
    void setState(State* state);
 
 private:
-   Agency* agency;
-   State* state;
+    Agency* agency;
+    State* state;
+
    struct appSettings settings;
 };
 

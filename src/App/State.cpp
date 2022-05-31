@@ -120,3 +120,40 @@ void State::displayTrips(App* app, const Path &path) {
         }
     }
 }
+
+void State::chooseSrcDest(App *app, int &src, int &dest) {
+    string node = "source";
+    while (true) {
+        cout << "Graph size: " << app->getAgency()->getGraphSize() << "\nChoose " << node << " node: ";
+        int option = readOption(app);
+        cout << "\n";
+
+        checkNode(app, option, node);
+
+        if (node == "source") src = option;
+        else dest = option;
+
+        while (src == dest) {
+            cout << "Source and destination node must be different.\nChoose destination node: ";
+            option = readOption(app);
+            cout << "\n";
+
+            checkNode(app, option, node);
+
+            dest = option;
+        }
+
+        if (node == "destination") break;
+        node = "destination";
+    }
+}
+
+void State::checkNode(App *app, int &node, string src_dest) {
+    while (node < 1 || node > app->getAgency()->getGraphSize()) {
+        cout << "Node must be between 1 and " << app->getAgency()->getGraphSize()
+             << ".\nChoose " << src_dest << " node: ";
+
+        node = readOption(app);
+        cout << "\n";
+    }
+}

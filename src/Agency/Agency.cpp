@@ -4,8 +4,8 @@ Agency::Agency(const string &file_path) {
     network = Graph(file_path);
 }
 
-Path Agency::scenario11() {
-    return network.minmaxPath(1, 6);
+Path Agency::scenario11(int src, int dest) {
+    return network.minmaxPath(src, dest);
 }
 
 pair<Path, Path> Agency::scenario12() {
@@ -34,11 +34,15 @@ pair<Path, Path> Agency::scenario12() {
      */
 }
 
-Path Agency::scenario21(const int& dimension) {
-    return network.maxFlow(1, 6, dimension);
+Path Agency::scenario21(int src, int dest, const int& dimension) {
+    return network.maxFlow(src, dest, dimension);
 }
 
-Path Agency::scenario23() {
-    return network.maxFlow(1, 6);
+Path Agency::scenario23(int src, int dest) {
+    return network.maxFlow(src, dest);
+}
+
+int Agency::getGraphSize() {
+    return network.getSize();
 }
 
