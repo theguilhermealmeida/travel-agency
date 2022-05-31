@@ -38,8 +38,9 @@ void Scenery2State::display21(App *app) {
     cout << "What is the dimension of the group?\n";
     int dimension = readOption(app);
 
-    int flow = app->getAgency()->scenario21(dimension);
-    cout << "Path found with a flow of " << flow << ".\n\n";
+    Path path = app->getAgency()->scenario21(dimension);
+    cout << "Path found with a flow of " << path.getFlow() << ".\n\n";
+    cout << "2) Display trips.\n";
     cout << "1) Go back.\n";
     cout << "0) Exit.\n";
 
@@ -48,6 +49,9 @@ void Scenery2State::display21(App *app) {
         int option = readOption(app);
 
         switch (option) {
+            case 2:
+                displayTrips(app, path);
+                return;
             case 1:
                 return;
             case 0:
@@ -63,10 +67,11 @@ void Scenery2State::display21(App *app) {
 void Scenery2State::display23(App *app) {
     printBreak();
 
-    int flow = app->getAgency()->scenario23();
+    Path path = app->getAgency()->scenario23();
 
     cout << "Scenery 2.3 - Maximum group dimension\n\n";
-    cout << "The maximum flow is " << flow << ".\n\n";
+    cout << "The maximum flow is " << path.getFlow() << ".\n\n";
+    cout << "2) Display trips.\n";
     cout << "1) Go back.\n";
     cout << "0) Exit.\n";
 
@@ -75,6 +80,9 @@ void Scenery2State::display23(App *app) {
         int option = readOption(app);
 
         switch (option) {
+            case 2:
+                displayTrips(app, path);
+                return;
             case 1:
                 return;
             case 0:

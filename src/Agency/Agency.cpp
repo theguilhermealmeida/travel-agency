@@ -34,11 +34,11 @@ pair<Path, Path> Agency::scenario12() {
      */
 }
 
-int Agency::scenario21(const int& dimension) {
+Path Agency::scenario21(const int& dimension) {
     return network.maxFlow(1, 6, dimension);
 }
 
-int Agency::scenario23() {
+Path Agency::scenario23() {
     return network.maxFlow(1, 6);
 }
 

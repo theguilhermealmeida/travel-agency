@@ -99,9 +99,9 @@ public:
     * @param src The starting node.
     * @param dest The destination node.
     * @param dimension Optional: The group's dimension. This acts as a delimiter.
-    * @return Integer value representing the maximum flow for the graph.
+    * @return Path with all the trips taken and respective flow.
     */
-   int maxFlow(const int& src, const int& dest, int dimension = INT_MAX);
+   Path maxFlow(const int& src, const int& dest, int dimension = INT_MAX);
 
    /**
     * Get the maximum flow for the graph using the Ford-Fulkerson method.
@@ -111,9 +111,9 @@ public:
     * @param dest The destination node.
     * @param residual Matrix of adjacency's where the residual graph will be stored.
     * @param dimension Optional: The group's dimension. This acts as a delimiter.
-    * @return Integer value representing the maximum flow for the graph.
+    * @return Path with all the trips taken and respective flow.
     */
-   int maxFlow(const int& src, const int& dest, vector<vector<int> >& residual, int dimension = INT_MAX);
+   Path maxFlow(const int& src, const int& dest, vector<vector<int> >& residual, int dimension = INT_MAX);
 
    /**
     * Get the maximum flow for the graph using the Ford-Fulkerson method and starting with an
@@ -123,9 +123,9 @@ public:
     * @param dest The destination node.
     * @param residual Already filled adjacency matrix. The flow will be calculated from this data.
     * @param dimension Optional: The group's dimension. This acts as a delimiter.
-    * @return Integer value representing the maximum flow for the graph.
+    * @return Path with all the trips taken and respective flow.
     */
-   int maxFlowFromPath(const int& src, const int& dest, vector<vector<int> >& residual, int dimension = INT_MAX);
+   Path maxFlowFromPath(const int& src, const int& dest, vector<vector<int> >& residual, int dimension = INT_MAX);
 
 private:
    /**
@@ -146,6 +146,13 @@ private:
     */
    Path getPath(const int& src, int dest);
 
+   /**
+    * Create a path from a residual network.
+    * @param residual Adjacency matrix representing the residual graph.
+    * @param flow Maximum flow achieved through the path.
+    * @return Path with all the trips taken and respective flow.
+    */
+   Path getPathFromResidual(const vector<vector<int> >& residual, const int& flow);
 
    vector<int> getPathNodes(const int& src, int dest);
     int getPathCapacity(vector<Trip> path);

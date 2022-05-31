@@ -134,17 +134,17 @@ Path Graph::minmaxPath(const int &src, const int &dest) {
     return getPath(src, dest);
 }
 
-int Graph::maxFlow(const int &src, const int &dest, int dimension) {
+Path Graph::maxFlow(const int &src, const int &dest, int dimension) {
     vector<vector<int> > residual(size + 1, vector<int> (size +1));
     return maxFlowFromPath(src, dest, residual, dimension);
 }
 
-int Graph::maxFlow(const int &src, const int &dest, vector<vector<int> >& residual, int dimension) {
+Path Graph::maxFlow(const int &src, const int &dest, vector<vector<int> >& residual, int dimension) {
     residual = vector<vector<int> >(size + 1, vector<int> (size +1));
     return maxFlowFromPath(src, dest, residual, dimension);
 }
 
-int Graph::maxFlowFromPath(const int &src, const int &dest, vector<vector<int> >& residual, int dimension) {
+Path Graph::maxFlowFromPath(const int &src, const int &dest, vector<vector<int> >& residual, int dimension) {
     int max_flow = 0;
     vector<int> path;
     for (int i = 1; i<= size; i++) {
@@ -164,7 +164,7 @@ int Graph::maxFlowFromPath(const int &src, const int &dest, vector<vector<int> >
         }
         max_flow += path_flow;
     }
-    return max_flow;
+    return getPathFromResidual(residual, max_flow);
 }
 
 vector<int> Graph::bfsAdjacencyPath(const int& src, const int& dest, vector<vector<int> > graph)
@@ -201,11 +201,25 @@ Path Graph::getPath(const int& src, int dest)
     for (int i = 0; i < path_nodes.size(); i++) {
         for (auto e: nodes[path_nodes[i]].adj) {
             if (e.dest == path_nodes[i + 1]) {
-                path.addTrip({path_nodes[i], e.dest, e.capacity, e.duration});
+                path.addTrip({path_nodes[i], e.dest, e.capacity, e.capacity, e.duration});
                 break;
             }
         }
     }
+    return path;
+}
+
+Path Graph::getPathFromResidual(const vector<vector<int> >& residual, const int& flow) {
+    Path path;
+    for (int i = 1; i <= size; i++) {
+        for (Edge e: nodes[i].adj) {
+            int e_flow = residual[e.dest][i];
+            if (e_flow > 0) {
+                path.addTrip({i, e.dest, e.capacity, e_flow, e.duration});
+            }
+        }
+    }
+    path.setFlow(flow);
     return path;
 }
 

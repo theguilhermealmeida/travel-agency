@@ -28,9 +28,19 @@ public:
     */
    pair<Path, Path> scenario12();
 
-   //TODO find a way to display the path
-   int scenario21(const int& dimension);
-   int scenario23();
+   /**
+    * Scenario 2.1 - Get the path with maximum flow for a given group dimension.
+    * The group splits up.
+    * @param dimension Dimension needed for the group.
+    * @return Path with all the trips taken and respective flow.
+    */
+   Path scenario21(const int& dimension);
+
+   /**
+    * Scenario 2.3 - Get the maximum path through the network when the group spits up.
+    * @return Path with all the trips taken and respective flow.
+    */
+   Path scenario23();
 
 private:
    Graph network;
