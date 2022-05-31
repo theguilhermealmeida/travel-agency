@@ -15,11 +15,9 @@ void ChooseSceneryState::step(App *app) {
             case 3:
                 app->setState(new InitialState());
                 return;
-/*
             case 2:
                 app->setState(new Scenery2State());
                 return;
-*/
             case 1:
                 app->setState(new Scenery1State());
                 return;

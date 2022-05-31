@@ -98,9 +98,10 @@ public:
      * //TODO add time complexity
      * @param src The starting node.
      * @param dest The destination node.
+     * @param dimension Optional: The group's dimension. This acts as a delimiter.
      * @return Integer value representing the maximum flow for the graph.
      */
-   int maxFlow(const int& src, const int& dest);
+   int maxFlow(const int& src, const int& dest, int dimension = INT_MAX);
 
 private:
    /**

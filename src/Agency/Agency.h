@@ -28,6 +28,10 @@ public:
     */
    pair<Path, Path> scenario12();
 
+   //TODO find a way to display the path
+   int scenario21(const int& dimension);
+   int scenario23();
+
 private:
    Graph network;
 };
