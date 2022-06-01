@@ -65,7 +65,9 @@ protected:
     */
    void displayTrips(App* app, const Path& path);
 
+    void chooseSrcDest(App *app, int &src, int &dest);
 private:
+
    /**
     * Get the next page for a table display.
     * @param app Pointer to the main application.
@@ -73,6 +75,8 @@ private:
     * @param max_page Maximum number of pages.
     */
    void getNextPage(App* app, int& page, const int& max_page) const;
+
+    void checkNode(App *app, int &node, string src_dest);
 };
 
 

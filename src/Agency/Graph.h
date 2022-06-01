@@ -93,16 +93,44 @@ public:
      */
     int comparePaths(vector<Trip> s11, vector<Trip> s12);
 
-    /**
-     * Get the maximum flow for the graph using the Ford-Fulkerson method.
-     * //TODO add time complexity
-     * @param src The starting node.
-     * @param dest The destination node.
-     * @return Integer value representing the maximum flow for the graph.
-     */
-   int maxFlow(const int& src, const int& dest);
+   /**
+    * Get the maximum flow for the graph using the Ford-Fulkerson method.
+    * //TODO add time complexity
+    * @param src The starting node.
+    * @param dest The destination node.
+    * @param dimension Optional: The group's dimension. This acts as a delimiter.
+    * @return Path with all the trips taken and respective flow.
+    */
+   Path maxFlow(const int& src, const int& dest, int dimension = INT_MAX);
 
+   /**
+    * Get the maximum flow for the graph using the Ford-Fulkerson method.
+    * This method stores the residual graph in an adjacency matrix;
+    * //TODO add time complexity
+    * @param src The starting node.
+    * @param dest The destination node.
+    * @param residual Matrix of adjacency's where the residual graph will be stored.
+    * @param dimension Optional: The group's dimension. This acts as a delimiter.
+    * @return Path with all the trips taken and respective flow.
+    */
+   Path maxFlow(const int& src, const int& dest, vector<vector<int> >& residual, int dimension = INT_MAX);
+
+   /**
+    * Get the maximum flow for the graph using the Ford-Fulkerson method and starting with an
+    * already filled residual graph.
+    * //TODO add time complexity
+    * @param src The starting node.
+    * @param dest The destination node.
+    * @param residual Already filled adjacency matrix. The flow will be calculated from this data.
+    * @param flow Current flow considering already filled path.
+    * @param dimension Optional: The group's dimension. This acts as a delimiter.
+    * @return Path with all the trips taken and respective flow.
+    */
+   Path maxFlowFromPath(const int& src, const int& dest, vector<vector<int> >& residual, int flow,int dimension = INT_MAX);
+
+    int getSize();
 private:
+
    /**
     * Uses breadth-first search to find the shortest path (less nodes) in the residual graph.
     * The bfs' time complexity is O(V + E) and after that its O(n) to get the path.
@@ -121,8 +149,15 @@ private:
     */
    Path getPath(const int& src, int dest);
 
+   /**
+    * Create a path from a residual network.
+    * @param residual Adjacency matrix representing the residual graph.
+    * @param flow Maximum flow achieved through the path.
+    * @return Path with all the trips taken and respective flow.
+    */
+   Path getPathFromResidual(const vector<vector<int> >& residual, const int& flow);
+    vector<int> getPathNodes(const int& src, int dest);
 
-   vector<int> getPathNodes(const int& src, int dest);
     int getPathCapacity(vector<Trip> path);
 
     int getPathTranshipments(vector<Trip> path);

@@ -1,5 +1,5 @@
-#ifndef DELIVERY_SCHEDULER_SCENERY1STATE_H
-#define DELIVERY_SCHEDULER_SCENERY1STATE_H
+#ifndef SCENERY1STATE_H
+#define SCENERY1STATE_H
 
 #include <iostream>
 
@@ -14,4 +14,4 @@ class Scenery1State : public State {
     void display12(App *app);
 };
 
-#endif //DELIVERY_SCHEDULER_SCENERY1STATE_H
+#endif

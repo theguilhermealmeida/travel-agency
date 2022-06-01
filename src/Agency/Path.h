@@ -16,6 +16,8 @@ struct Trip {
     int dest;
     /** The capacity supported by the trip. */
     int capacity;
+    /** Flow going through this trip. */
+    int flow;
     /** Duration of the trip. */
     int duration;
 
@@ -45,6 +47,18 @@ public:
    void addTrip(const Trip& trip);
 
    /**
+    * Set the flow of the path. Best suited when the group splits up.
+    * @param flow Maximum flow through the path.
+    */
+   void setFlow(const int& flux);
+
+   /**
+    * Get the maximum flow through the path.
+    * @return Integer with maximum flow.
+    */
+   int getFlow() const;
+
+   /**
     * Print a summary of the Path.
     */
    void printInfo() const;
@@ -55,6 +69,7 @@ public:
    void printTrips() const;
 private:
    int capacity;
+   int flow;
    int duration;
    vector<Trip> trips;
 };
