@@ -26,7 +26,7 @@ public:
     * Scenario 1.2 - Maximize the group dimension and minimize number of transhipments.
     * @return //TODO
     */
-   pair<Path, Path> scenario12();
+   pair<Path, Path> scenario12(const int& src, const int& dest);
 
    /**
     * Scenario 2.1 - Get the path with maximum flow for a given group dimension.

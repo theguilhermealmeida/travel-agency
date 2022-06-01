@@ -45,7 +45,7 @@ void Scenery2State::display21(App *app) {
     cout << "Path found with a flow of " << path.getFlow() << ".\n\n";
     cout << "3) Display trips.\n";
     cout << "2) Add more people to the group (Scenario 2.2).\n";
-    cout << "1) Go back.\n";
+    cout << "5) Go back.\n";
     cout << "0) Exit.\n";
 
     while (true)
@@ -59,7 +59,7 @@ void Scenery2State::display21(App *app) {
             case 2:
                 display22(app, src, dest, path.getFlow(), dimension);
                 return;
-            case 1:
+            case 5:
                 return;
             case 0:
                 app->setState(nullptr);
@@ -82,7 +82,7 @@ void Scenery2State::display22(App *app, const int& src, const int& dest, const i
     cout << "Path found with a flow of " << path.getFlow() << ".\n\n";
     cout << "3) Display trips.\n";
     cout << "2) Add even more people to the group.\n";
-    cout << "1) Go back.\n";
+    cout << "5) Go back.\n";
     cout << "0) Exit.\n";
 
     while (true)
@@ -96,7 +96,7 @@ void Scenery2State::display22(App *app, const int& src, const int& dest, const i
             case 2:
                 display22(app, src, dest, path.getFlow(), dimension);
                 return;
-            case 1:
+            case 5:
                 app->setState(new Scenery2State());
                 return;
             case 0:
@@ -122,7 +122,7 @@ void Scenery2State::display23(App *app) {
     cout << "Scenery 2.3 - Maximum group dimension\n\n";
     cout << "The maximum flow is " << path.getFlow() << ".\n\n";
     cout << "2) Display trips.\n";
-    cout << "1) Go back.\n";
+    cout << "5) Go back.\n";
     cout << "0) Exit.\n";
 
     while (true)
@@ -133,7 +133,7 @@ void Scenery2State::display23(App *app) {
             case 2:
                 displayTrips(app, path);
                 return;
-            case 1:
+            case 5:
                 return;
             case 0:
                 app->setState(nullptr);

@@ -7,7 +7,7 @@ void Scenery1State::step(App *app) {
 
     std::cout << "2) 1.2 - Maximize group dimension and minimize transhipments\n";
     std::cout << "1) 1.1 - Maximize group dimension\n\n";
-    std::cout << "3) Go back\n";
+    std::cout << "5) Go back\n";
     std::cout << "0) Exit.\n";
 
     while (true)
@@ -15,14 +15,14 @@ void Scenery1State::step(App *app) {
         int option = readOption(app);
 
         switch (option) {
-            case 3:
+            case 5:
                 app->setState(new ChooseSceneryState());
                 return;
             case 1:
                 display11(app);
                 return;
             case 2:
-                //display12(app);
+                display12(app);
                 return;
             default:
                 printInvalidOption();
@@ -43,7 +43,7 @@ void Scenery1State::display11(App *app) {
     std::cout << "Scenery 1.1 - Maximize group dimension\n\n";
     path.printInfo();
     cout << "\n2) Display trips.\n";
-    cout << "1) Go back.\n";
+    cout << "5) Go back.\n";
     cout << "0) Exit.\n";
 
     while (true)
@@ -54,7 +54,7 @@ void Scenery1State::display11(App *app) {
             case 2:
                 displayTrips(app, path);
                 return;
-            case 1:
+            case 5:
                 return;
             case 0:
                 app->setState(nullptr);
@@ -66,30 +66,42 @@ void Scenery1State::display11(App *app) {
 
 }
 
-/*void Scenery1State::display12(App *app) {
+void Scenery1State::display12(App *app) {
     printBreak();
 
-    vector<vector<Trip>> paths = app->getAgency()->scenario12();
+    int src, dest;
+    chooseSrcDest(app, src, dest);
+    printBreak();
+
+
+    pair<Path, Path> paths = app->getAgency()->scenario12(src, dest);
 
     std::cout << "Scenery 1.2 - Maximize group dimension and minimize transhipments.\n\n";
 
-    int sol = 1;
-    for (auto p: paths) {
-        cout << "Solution " << sol << ": \n\n";
-        for (auto t: p) {
-            cout << t.src << " ------------> " << t.dest << "\n";
-            cout << "   capacity: " << t.capacity << "\n";
-            cout << "   duration: " << t.duration << "\n\n";
-        }
-        sol++;
-    }
+    cout << "      Max dimension info\n";
+    paths.first.printInfo();
+    cout << "\n      Min transhipments info\n";
+    paths.second.printInfo();
+    cout << "\n2) Display max dimension trips.\n";
+    cout << "1) Display min transhipments trips.\n";
+    cout << "5) Go back.\n";
+    cout << "0) Exit.\n";
 
-    cout << "\n1) Go back.\n";
-    while (true) {
+    while (true)
+    {
         int option = readOption(app);
 
         switch (option) {
+            case 5:
+                return;
+            case 2:
+                displayTrips(app, paths.second);
+                return;
             case 1:
+                displayTrips(app, paths.first);
+                return;
+            case 0:
+                app->setState(nullptr);
                 return;
             default:
                 printInvalidOption();
@@ -97,5 +109,4 @@ void Scenery1State::display11(App *app) {
     }
 
 }
- */
 

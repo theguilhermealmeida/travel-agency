@@ -5,14 +5,14 @@ void ChooseSceneryState::step(App *app) {
     std::cout << "\tScenery\n\n";
     std::cout << "2) Group splits up.\n";
     std::cout << "1) Group stays together.\n\n";
-    std::cout << "3) Go Back.\n";
+    std::cout << "5) Go Back.\n";
     std::cout << "0) Exit.\n";
 
     while (true) {
         int option = readOption(app);
 
         switch (option) {
-            case 3:
+            case 5:
                 app->setState(new InitialState());
                 return;
             case 2:
