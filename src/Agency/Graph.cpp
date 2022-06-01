@@ -264,4 +264,7 @@ int Graph::getPathTranshipments(vector<Trip> path)
     return path.size();
 }
 
+int Graph::getSize() {
+    return size;
+}
 

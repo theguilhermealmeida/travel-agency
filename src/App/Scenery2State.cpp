@@ -33,11 +33,15 @@ void Scenery2State::step(App *app) {
 void Scenery2State::display21(App *app) {
     printBreak();
 
+    int src, dest;
+    chooseSrcDest(app, src, dest);
+    printBreak();
+
     cout << "Scenery 2.1 - Allocate a group of given dimension\n\n";
     cout << "What is the dimension of the group?\n";
     int dimension = readOption(app);
 
-    Path path = app->getAgency()->scenario21(dimension, residual);
+    Path path = app->getAgency()->scenario21(src, dest, dimension, residual);
     cout << "Path found with a flow of " << path.getFlow() << ".\n\n";
     cout << "3) Display trips.\n";
     cout << "2) Add more people to the group (Scenario 2.2).\n";
@@ -53,7 +57,7 @@ void Scenery2State::display21(App *app) {
                 displayTrips(app, path);
                 return;
             case 2:
-                display22(app, path.getFlow(), dimension);
+                display22(app, src, dest, path.getFlow(), dimension);
                 return;
             case 1:
                 return;
@@ -67,14 +71,14 @@ void Scenery2State::display21(App *app) {
 
 }
 
-void Scenery2State::display22(App *app, const int& flow, int dimension) {
+void Scenery2State::display22(App *app, const int& src, const int& dest, const int& flow, int dimension) {
     printBreak();
 
     cout << "Scenery 2.2 - Correct a path for a different group dimension\n\n";
     cout << "How many people are joining the group?\n";
     dimension += readOption(app);
 
-    Path path = app->getAgency()->scenario22(dimension, residual, flow);
+    Path path = app->getAgency()->scenario22(src, dest, dimension, residual, flow);
     cout << "Path found with a flow of " << path.getFlow() << ".\n\n";
     cout << "3) Display trips.\n";
     cout << "2) Add even more people to the group.\n";
@@ -90,7 +94,7 @@ void Scenery2State::display22(App *app, const int& flow, int dimension) {
                 displayTrips(app, path);
                 return;
             case 2:
-                display22(app, path.getFlow(), dimension);
+                display22(app, src, dest, path.getFlow(), dimension);
                 return;
             case 1:
                 app->setState(new Scenery2State());
@@ -108,7 +112,12 @@ void Scenery2State::display22(App *app, const int& flow, int dimension) {
 void Scenery2State::display23(App *app) {
     printBreak();
 
-    Path path = app->getAgency()->scenario23();
+    int src, dest;
+    chooseSrcDest(app, src, dest);
+    printBreak();
+
+
+    Path path = app->getAgency()->scenario23(src, dest);
 
     cout << "Scenery 2.3 - Maximum group dimension\n\n";
     cout << "The maximum flow is " << path.getFlow() << ".\n\n";

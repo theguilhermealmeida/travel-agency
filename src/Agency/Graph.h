@@ -128,7 +128,9 @@ public:
     */
    Path maxFlowFromPath(const int& src, const int& dest, vector<vector<int> >& residual, int flow,int dimension = INT_MAX);
 
+    int getSize();
 private:
+
    /**
     * Uses breadth-first search to find the shortest path (less nodes) in the residual graph.
     * The bfs' time complexity is O(V + E) and after that its O(n) to get the path.
@@ -154,8 +156,8 @@ private:
     * @return Path with all the trips taken and respective flow.
     */
    Path getPathFromResidual(const vector<vector<int> >& residual, const int& flow);
+    vector<int> getPathNodes(const int& src, int dest);
 
-   vector<int> getPathNodes(const int& src, int dest);
     int getPathCapacity(vector<Trip> path);
 
     int getPathTranshipments(vector<Trip> path);

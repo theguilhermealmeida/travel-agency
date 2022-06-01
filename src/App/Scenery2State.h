@@ -21,7 +21,7 @@ class Scenery2State : public State {
     * @param app Pointer to main application.
     * @param residual Matrix of adjacency's where the residual graph will be stored.
     */
-   void display22(App *app, const int& flow, int dimension);
+   void display22(App *app, const int& src, const int& dest, const int& flow, int dimension);
 
    /**
     * Scenario 2.3 - Get the maximum path through the network when the group spits up.
