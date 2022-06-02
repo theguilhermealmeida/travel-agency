@@ -23,6 +23,11 @@ struct appSettings App::getSettings() const {
     return settings;
 }
 
+void App::changeFile(string path) {
+    settings.file_path = path;
+    agency = new Agency(settings.file_path);
+}
+
 void App::setState(State* state)
 {
     this->state = state;
