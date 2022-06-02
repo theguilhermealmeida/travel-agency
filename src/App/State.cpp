@@ -102,18 +102,14 @@ void State::displayTrips(App* app, const Path &path) {
     path.printTrips();
 
     cout << endl;
-    cout << "1) Go back\n";
-    cout << "0) Exit\n";
+    cout << "9) Go back\n";
 
     while (true)
     {
         int option = readOption(app);
 
         switch (option) {
-            case 1:
-                return;
-            case 0:
-                app->setState(nullptr);
+            case 9:
                 return;
             default:
                 printInvalidOption();

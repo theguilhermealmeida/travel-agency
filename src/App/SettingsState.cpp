@@ -7,7 +7,7 @@ void SettingsState::step(App* app) {
 
     std::cout << "Test file: " << app->getSettings().file_path << "\n\n";
 
-    std::cout << "1) Go back\n";
+    std::cout << "9) Go back\n";
     std::cout << "0) Exit\n";
 
     while (true)
@@ -15,7 +15,7 @@ void SettingsState::step(App* app) {
         int option = readOption(app);
 
         switch (option) {
-            case 1:
+            case 9:
                 app->setState(new InitialState());
                 return;
             case 0:

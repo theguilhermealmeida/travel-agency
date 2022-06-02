@@ -3,7 +3,7 @@
 void InitialState::step(App* app) {
    printBreak();
 
-   std::cout << "\tHello World!\n\n";
+   std::cout << "\tTravel Agency\n\n";
    std::cout << "2) Start\n";
    std::cout << "1) Settings\n";
    std::cout << "0) Exit\n";
