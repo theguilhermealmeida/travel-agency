@@ -5,6 +5,7 @@ void Scenery2State::step(App *app) {
 
     std::cout << "\tScenario 2\n\n";
 
+    std::cout << "4) 2.4 - Minimum time\n";
     std::cout << "3) 2.3 - Maximum group dimension\n";
     std::cout << "1) 2.1 - Group of given dimension\n";
     std::cout << "\n9) Go back\n";
@@ -20,6 +21,9 @@ void Scenery2State::step(App *app) {
                 return;
             case 3:
                 display23(app);
+                return;
+            case 4:
+                display24(app);
                 return;
             case 9:
                 app->setState(new ChooseSceneryState());
@@ -166,4 +170,46 @@ void Scenery2State::display23(App *app) {
         }
     }
 
+}
+
+void Scenery2State::display24(App *app) {
+    printBreak();
+
+    int src, dest;
+    chooseSrcDest(app, src, dest);
+    printBreak();
+
+    cout << "Scenery 2.4 - Find how long the group will take to reunite at the destination\n\n";
+
+    Path path = app->getAgency()->scenario24(src, dest);
+
+    auto info = [](Path path) {
+        cout << "The group will reunite in " << path.min_time << " minutes.\n\n";
+        cout << "3) Display trips.\n";
+        cout << "\n9) Go back.\n";
+        cout << "0) Exit.\n";
+    };
+
+    info(path);
+
+    while (true)
+    {
+        int option = readOption(app);
+
+        switch (option) {
+            case 3:
+                displayTrips(app, path);
+                printBreak();
+                info(path);
+                break;
+            case 9:
+                app->setState(new Scenery2State());
+                return;
+            case 0:
+                app->setState(nullptr);
+                return;
+            default:
+                printInvalidOption();
+        }
+    }
 }

@@ -128,7 +128,9 @@ public:
     */
    Path maxFlowFromPath(const int& src, const int& dest, vector<vector<int> >& residual, int flow,int dimension = INT_MAX);
 
+    Path minDuration(Path path, const int& src, const int& dest);
     int getSize();
+
 private:
 
    /**
@@ -148,14 +150,14 @@ private:
     * @return Returns a vector of the path taken from src to dest.
     */
    Path getPath(const int& src, int dest);
-
-   /**
+    /**
     * Create a path from a residual network.
     * @param residual Adjacency matrix representing the residual graph.
     * @param flow Maximum flow achieved through the path.
     * @return Path with all the trips taken and respective flow.
     */
    Path getPathFromResidual(const vector<vector<int> >& residual, const int& flow);
+
     vector<int> getPathNodes(const int& src, int dest);
 
     int getPathCapacity(vector<Trip> path);
@@ -172,13 +174,17 @@ private:
        list<Edge> adj;
        list<Edge> residual_adj;
        bool visited;
-       int distance;
-       int predecessor;
-   };
+        int distance;
+        int predecessor;
+        int degree;
+        int es; // earliest start
+    };
 
     vector<Node> nodes;
 
    int size;
+
+    bool inTrip(vector<Trip> trips, int node);
 };
 
 #endif

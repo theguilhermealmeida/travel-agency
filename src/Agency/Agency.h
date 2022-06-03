@@ -52,7 +52,9 @@ public:
     */
    Path scenario23(const int& src, const int& dest);
 
+    Path scenario24(const int &src, const int &dest);
     int getGraphSize();
+
 private:
 
    Graph network;

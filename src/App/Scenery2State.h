@@ -29,6 +29,12 @@ class Scenery2State : public State {
     */
    void display23(App *app);
 
+   /**
+    * Scenario 2.4 - Find how long the group will take to reunite at the destination.
+    * @param app Pointer to main application.
+    */
+   void display24(App *app);
+
    vector<vector<int> > residual;
 };
 

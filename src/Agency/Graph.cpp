@@ -268,3 +268,54 @@ int Graph::getSize() {
     return size;
 }
 
+
+Path Graph::minDuration(Path path, const int& src, const int& dest) {
+    queue<int> q;
+    set<int> pathNodes;
+
+    for (auto t: path.getTrips()) {
+       pathNodes.insert(t.src);
+       pathNodes.insert(t.dest);
+    }
+
+    for (int i = 1; i < nodes.size(); i++) {
+        nodes[i].predecessor = 0;
+        nodes[i].es = 0;
+        nodes[i].degree = 0;
+    }
+    for (auto n: nodes) {
+        for (auto e: n.adj) {
+            nodes[e.dest].degree += 1;
+       }
+    }
+    for (int i = 1; i < nodes.size(); i++) {
+        if (nodes[i].degree == 0) q.push(i);
+    }
+
+    int dur_min = -1;
+    int v;
+
+    while (!q.empty()) {
+        v = q.front();
+        q.pop();
+
+        if (dur_min < nodes[v].es)
+            dur_min = nodes[v].es;
+
+        for (auto e: nodes[v].adj) {
+            if (pathNodes.find(e.dest) != pathNodes.end()) {
+                if (nodes[e.dest].es < (nodes[v].es + e.duration)) {
+                    nodes[e.dest].es = nodes[v].es + e.duration;
+                    nodes[e.dest].predecessor = v;
+                }
+            }
+                nodes[e.dest].degree += -1;
+                if (nodes[e.dest].degree == 0) q.push(e.dest);
+        }
+    }
+
+    Path path_result = getPath(src, dest);
+    path_result.min_time = dur_min;
+
+    return path_result;
+}
