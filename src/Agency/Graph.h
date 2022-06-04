@@ -129,6 +129,8 @@ public:
    Path maxFlowFromPath(const int& src, const int& dest, vector<vector<int> >& residual, int flow,int dimension = INT_MAX);
 
     Path minDuration(Path path, const int& src, const int& dest);
+    Path maxDuration(Path path, const int &src, const int &dest);
+
     int getSize();
 
 private:
@@ -142,14 +144,14 @@ private:
     * @return A vector of nodes taken from src to dest.
     */
    vector<int> bfsAdjacencyPath(const int& src, const int& dest, vector<vector<int> > graph);
-
-   /**
+    /**
     * Makes a path vector from each node's predecessor. Time complexity is O(n).
     * @param src The starting node.
     * @param dest The destination node.
     * @return Returns a vector of the path taken from src to dest.
     */
    Path getPath(const int& src, int dest);
+
     /**
     * Create a path from a residual network.
     * @param residual Adjacency matrix representing the residual graph.
@@ -178,13 +180,13 @@ private:
         int predecessor;
         int degree;
         int es; // earliest start
+        int ls; // latest start
+        int waiting_time;
     };
 
     vector<Node> nodes;
 
    int size;
-
-    bool inTrip(vector<Trip> trips, int node);
 };
 
 #endif

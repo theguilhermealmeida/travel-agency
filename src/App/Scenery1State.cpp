@@ -86,12 +86,12 @@ void Scenery1State::display12(App *app) {
 
     auto info = [](pair<Path, Path> paths) {
         std::cout << "Scenery 1.2 - Maximize group dimension and minimize transhipments.\n\n";
-        cout << "      Max dimension info\n";
+        cout << "      Min transhipments info\n";
         paths.first.printInfo();
-        cout << "\n      Min transhipments info\n";
+        cout << "\n      Max dimensions info\n";
         paths.second.printInfo();
-        cout << "\n2) Display max dimension trips.\n";
-        cout << "1) Display min transhipments trips.\n";
+        cout << "\n2) Display min transhipments trips.\n";
+        cout << "1) Display max dimension trips.\n";
         cout << "\n9) Go back.\n";
         cout << "0) Exit.\n";
     };
@@ -106,12 +106,12 @@ void Scenery1State::display12(App *app) {
             case 9:
                 return;
             case 2:
-                displayTrips(app, paths.second);
+                displayTrips(app, paths.first);
                 printBreak();
                 info(paths);
                 break;
             case 1:
-                displayTrips(app, paths.first);
+                displayTrips(app, paths.second);
                 printBreak();
                 info(paths);
                 break;

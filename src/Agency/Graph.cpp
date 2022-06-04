@@ -83,11 +83,11 @@ Path Graph::bfsPath(const int& src, const int& dest)
 
 Path Graph::dijkstraPath(const int &src, const int &dest) {
     for (int i=1;i<=size;i++){
-        nodes[i].distance = INT_MAX;
+        nodes[i].ls = INT_MAX;
         nodes[i].visited = false;
         nodes[i].predecessor = 0;
     }
-    nodes[src].distance = 0;
+    nodes[src].ls = 0;
     MinHeap<int,int> h (size,-1);
     h.insert(src, nodes[src].distance);
     while(h.getSize()>0){
@@ -95,13 +95,13 @@ Path Graph::dijkstraPath(const int &src, const int &dest) {
         nodes[x].visited = true;
         for (Edge e: nodes[x].adj){
             if (!nodes[e.dest].visited
-                && nodes[e.dest].distance > nodes[x].distance + e.duration) {
-                    nodes[e.dest].distance = nodes[x].distance + e.duration;
+                && nodes[e.dest].ls > nodes[x].ls + e.duration) {
+                    nodes[e.dest].ls = nodes[x].ls + e.duration;
                     nodes[e.dest].predecessor = x;
                     if (!h.hasKey(e.dest)) {
-                        h.insert(e.dest, nodes[e.dest].distance);
+                        h.insert(e.dest, nodes[e.dest].ls);
                     } else {
-                        h.decreaseKey(e.dest, nodes[e.dest].distance);
+                        h.decreaseKey(e.dest, nodes[e.dest].ls);
                     }
             }
         }
@@ -239,6 +239,7 @@ vector<int> Graph::getPathNodes(const int& src, int dest) {
     return path;
 }
 
+/*
 int Graph::comparePaths(vector<Trip> s11, vector<Trip> s12)
 {
     if (getPathCapacity(s11) >= getPathCapacity(s12)
@@ -248,6 +249,7 @@ int Graph::comparePaths(vector<Trip> s11, vector<Trip> s12)
         && getPathTranshipments(s12) < getPathTranshipments(s11)) return 2;
     return 0;
 }
+*/
 
 int Graph::getPathCapacity(vector<Trip> path)
 {
@@ -280,7 +282,6 @@ Path Graph::minDuration(Path path, const int& src, const int& dest) {
 
     for (int i = 1; i < nodes.size(); i++) {
         nodes[i].predecessor = 0;
-        nodes[i].es = 0;
         nodes[i].degree = 0;
     }
     for (auto n: nodes) {
@@ -315,7 +316,79 @@ Path Graph::minDuration(Path path, const int& src, const int& dest) {
     }
 
     Path path_result = getPath(src, dest);
-    path_result.min_time = dur_min;
+    path_result.getMinTime() = dur_min;
+
+    return path_result;
+}
+
+Path Graph::maxDuration(Path path, const int& src, const int& dest) {
+    queue<int> q;
+    set<int> pathNodes;
+
+    /* find nodes of path */
+    for (auto t: path.getTrips()) {
+        pathNodes.insert(t.src);
+        pathNodes.insert(t.dest);
+    }
+
+    /* find the shortest path from src to all nodes of path */
+    for (int i = 1; i < size; i++) {
+        if (pathNodes.find(i) != pathNodes.end()) {
+            dijkstraPath(src, i);
+        }
+    }
+
+
+    /* algorithm begins */
+    for (int i = 1; i < nodes.size(); i++) {
+        nodes[i].predecessor = 0;
+        nodes[i].es = 0;
+        nodes[i].degree = 0;
+        nodes[i].waiting_time = 0;
+    }
+
+
+    for (auto n: nodes) {
+        for (auto e: n.adj) {
+            nodes[e.dest].degree += 1;
+        }
+    }
+    for (int i = 1; i < nodes.size(); i++) {
+        if (nodes[i].degree == 0) q.push(i);
+    }
+
+    int max_waiting_time = -1;
+    int v;
+
+    while (!q.empty()) {
+        v = q.front();
+        q.pop();
+
+        if (max_waiting_time < nodes[v].waiting_time) {
+            max_waiting_time = nodes[v].waiting_time;
+        }
+
+        for (auto e: nodes[v].adj) {
+            if (pathNodes.find(e.dest) != pathNodes.end()) {
+                if (nodes[e.dest].es < (nodes[v].es + e.duration)) {
+                    nodes[e.dest].es = nodes[v].es + e.duration;
+                    nodes[e.dest].predecessor = v;
+                    nodes[e.dest].waiting_time = nodes[e.dest].es - nodes[e.dest].ls;
+                }
+            }
+            nodes[e.dest].degree += -1;
+            if (nodes[e.dest].degree == 0) q.push(e.dest);
+        }
+    }
+
+    Path path_result = getPath(src, dest);
+    path_result.getWaitingTime() = max_waiting_time;
+
+    /* find nodes with maximum waiting time */
+    for (int i = 1; i < nodes.size(); i++) {
+        if (nodes[i].waiting_time == max_waiting_time)
+            path_result.get_waiting_time_nodes().push_back(i);
+    }
 
     return path_result;
 }

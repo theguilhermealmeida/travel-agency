@@ -67,12 +67,19 @@ public:
     * Print the full list of trips taken.
     */
    void printTrips() const;
-    int min_time;
+
+   vector<int>& get_waiting_time_nodes();
+
+   int& getWaitingTime();
+   int& getMinTime();
 private:
     int capacity;
     int flow;
     int duration;
-   vector<Trip> trips;
+    int waiting_time;
+    int min_time;
+    vector<Trip> trips;
+    vector<int> waiting_time_nodes;
 };
 
 #endif

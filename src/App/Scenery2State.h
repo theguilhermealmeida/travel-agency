@@ -35,6 +35,12 @@ class Scenery2State : public State {
     */
    void display24(App *app);
 
+   /**
+    * Scenario 2.5 - Find the maximum waiting time in path and the nodes that wait that time.
+    * @param app Pointer to the main application.
+    */
+    void display25(App *app);
+
    vector<vector<int> > residual;
 };
 
