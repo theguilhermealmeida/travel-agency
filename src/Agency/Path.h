@@ -68,17 +68,51 @@ public:
     */
    void printTrips() const;
 
-   vector<int>& get_waiting_time_nodes();
 
-   int& getWaitingTime();
-   int& getMinTime();
+   /**
+    * Adds node with maximum waiting time to vector of waiting time nodes.
+    * @param node Node to add to vector.
+    */
+    void add_waiting_time_node(int node);
+
+    /**
+     * Getter for waiting time nodes vector.
+     * @return Vector with nodes with maximum waiting time.
+     */
+    vector<int> get_waiting_time_nodes();
+
+    /**
+     * Getter for maximum waiting time.
+     * @return Maximum waiting time in path.
+     */
+   int getWaitingTime();
+
+   /**
+    * Getter for minimal duration of project (path).
+    * @return Minimal duration of a project (path).
+    */
+   int getMinTime();
+
+   /**
+    * Setter for maximum waiting time.
+    * @param waiting_time New maximum waiting time of a path.
+    */
+    void setWaitingTime(int waiting_time);
+
+    /**
+     * Setter for minimal duration of a project (path).
+     * @param min_time New minimal duration of project (path).
+     */
+    void setMinTime(int min_time);
 private:
     int capacity;
     int flow;
     int duration;
     int waiting_time;
     int min_time;
+
     vector<Trip> trips;
+
     vector<int> waiting_time_nodes;
 };
 

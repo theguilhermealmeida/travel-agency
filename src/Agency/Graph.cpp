@@ -4,6 +4,8 @@ Graph::Graph(const int& size) : nodes(size + 1) {
     this->size = size;
 }
 
+/* Graph */
+
 Graph::Graph(const string &file_path) {
     int src, dest, capacity, duration, line = 1;
     string row, word;
@@ -54,6 +56,92 @@ bool Graph::connected(const int &src, const int &dest)
     return false;
 }
 
+
+
+/* Aux functions */
+
+Path Graph::getPath(const int& src, int dest)
+{
+    Path path;
+    vector<int> path_nodes= getPathNodes(src, dest);
+
+    for (int i = 0; i < path_nodes.size(); i++) {
+        for (auto e: nodes[path_nodes[i]].adj) {
+            if (e.dest == path_nodes[i + 1]) {
+                path.addTrip({path_nodes[i], e.dest, e.capacity, e.capacity, e.duration});
+                break;
+            }
+        }
+    }
+    return path;
+}
+
+vector<int> Graph::getPathNodes(const int& src, int dest) {
+    if (nodes[dest].predecessor == 0) return {};
+    vector<int> path;
+    do {
+        path.push_back(dest);
+        dest = nodes[dest].predecessor;
+    } while (dest != 0);
+    reverse(path.begin(), path.end());
+    return path;
+}
+
+Path Graph::getPathFromResidual(const vector<vector<int> >& residual, const int& flow) {
+    Path path;
+    for (int i = 1; i <= size; i++) {
+        for (Edge e: nodes[i].adj) {
+            int e_flow = residual[e.dest][i];
+            if (e_flow > 0) {
+                path.addTrip({i, e.dest, e.capacity, e_flow, e.duration});
+            }
+        }
+    }
+    path.setFlow(flow);
+    return path;
+}
+
+int Graph::getSize() {
+    return size;
+}
+
+
+
+
+
+/* Scenario 1.1 */
+
+Path Graph::minmaxPath(const int &src, const int &dest) {
+    for (int i=1;i<=size;i++){
+        nodes[i].distance = -1;
+        nodes[i].visited = false;
+        nodes[i].predecessor = 0;
+    }
+    nodes[src].distance = INT_MAX;
+    priority_queue<intPair, vector<intPair>, less<intPair>> h;
+    h.push({nodes[src].distance, src});
+    while(h.size() > 0){
+        int u = h.top().second;
+        h.pop();
+        nodes[u].visited = true;
+        for (Edge e: nodes[u].adj){
+            int min_dist = min(nodes[u].distance, e.capacity);
+            if (!nodes[e.dest].visited && min_dist > nodes[e.dest].distance) {
+                nodes[e.dest].distance = min_dist;
+                nodes[e.dest].predecessor = u;
+                h.push({nodes[e.dest].distance, e.dest});
+            }
+        }
+    }
+    return getPath(src, dest);
+}
+
+
+
+
+
+/* Scenario 1.2 */
+
 Path Graph::bfsPath(const int& src, const int& dest)
 {
     for (int v=1; v <= size; v++) {
@@ -81,68 +169,11 @@ Path Graph::bfsPath(const int& src, const int& dest)
     return getPath(src, dest);
 }
 
-Path Graph::dijkstraPath(const int &src, const int &dest) {
-    for (int i=1;i<=size;i++){
-        nodes[i].ls = INT_MAX;
-        nodes[i].visited = false;
-        nodes[i].predecessor = 0;
-    }
-    nodes[src].ls = 0;
-    MinHeap<int,int> h (size,-1);
-    h.insert(src, nodes[src].distance);
-    while(h.getSize()>0){
-        int x = h.removeMin();
-        nodes[x].visited = true;
-        for (Edge e: nodes[x].adj){
-            if (!nodes[e.dest].visited
-                && nodes[e.dest].ls > nodes[x].ls + e.duration) {
-                    nodes[e.dest].ls = nodes[x].ls + e.duration;
-                    nodes[e.dest].predecessor = x;
-                    if (!h.hasKey(e.dest)) {
-                        h.insert(e.dest, nodes[e.dest].ls);
-                    } else {
-                        h.decreaseKey(e.dest, nodes[e.dest].ls);
-                    }
-            }
-        }
-    }
-    return getPath(src, dest);
-}
 
-Path Graph::minmaxPath(const int &src, const int &dest) {
-    for (int i=1;i<=size;i++){
-        nodes[i].distance = -1;
-        nodes[i].visited = false;
-        nodes[i].predecessor = 0;
-    }
-    nodes[src].distance = INT_MAX;
-    priority_queue<intPair, vector<intPair>, less<intPair>> h;
-    h.push({nodes[src].distance, src});
-    while(h.size() > 0){
-        int u = h.top().second;
-        h.pop();
-        nodes[u].visited = true;
-        for (Edge e: nodes[u].adj){
-            int min_dist = min(nodes[u].distance, e.capacity);
-            if (!nodes[e.dest].visited && min_dist > nodes[e.dest].distance) {
-                nodes[e.dest].distance = min_dist;
-                nodes[e.dest].predecessor = u;
-                h.push({nodes[e.dest].distance, e.dest});
-            }
-        }
-    }
-    return getPath(src, dest);
-}
 
-Path Graph::maxFlow(const int &src, const int &dest, int dimension) {
-    vector<vector<int> > residual(size + 1, vector<int> (size +1));
-    for (int i = 1; i<= size; i++) {
-        for (auto e: nodes[i].adj) {
-            residual[i][e.dest] = e.capacity;
-        }
-    }
-    return maxFlowFromPath(src, dest, residual, 0, dimension);
-}
+
+
+/* Scenario 2.1 */
 
 Path Graph::maxFlow(const int &src, const int &dest, vector<vector<int> >& residual, int dimension) {
     residual = vector<vector<int> >(size + 1, vector<int> (size +1));
@@ -153,6 +184,11 @@ Path Graph::maxFlow(const int &src, const int &dest, vector<vector<int> >& resid
     }
     return maxFlowFromPath(src, dest, residual, 0, dimension);
 }
+
+
+
+
+/* Scenario 2.2 */
 
 Path Graph::maxFlowFromPath(const int &src, const int &dest, vector<vector<int> >& residual, int flow, int dimension) {
     int max_flow = flow;
@@ -198,96 +234,45 @@ vector<int> Graph::bfsAdjacencyPath(const int& src, const int& dest, vector<vect
     return getPathNodes(src, dest);
 }
 
-Path Graph::getPath(const int& src, int dest)
-{
-    Path path;
-    vector<int> path_nodes= getPathNodes(src, dest);
 
-    for (int i = 0; i < path_nodes.size(); i++) {
-        for (auto e: nodes[path_nodes[i]].adj) {
-            if (e.dest == path_nodes[i + 1]) {
-                path.addTrip({path_nodes[i], e.dest, e.capacity, e.capacity, e.duration});
-                break;
-            }
+
+
+
+/* Scenario 2.3 */
+
+Path Graph::maxFlow(const int &src, const int &dest, int dimension) {
+    vector<vector<int> > residual(size + 1, vector<int> (size +1));
+    for (int i = 1; i<= size; i++) {
+        for (auto e: nodes[i].adj) {
+            residual[i][e.dest] = e.capacity;
         }
     }
-    return path;
+    return maxFlowFromPath(src, dest, residual, 0, dimension);
 }
 
-Path Graph::getPathFromResidual(const vector<vector<int> >& residual, const int& flow) {
-    Path path;
-    for (int i = 1; i <= size; i++) {
-        for (Edge e: nodes[i].adj) {
-            int e_flow = residual[e.dest][i];
-            if (e_flow > 0) {
-                path.addTrip({i, e.dest, e.capacity, e_flow, e.duration});
-            }
-        }
-    }
-    path.setFlow(flow);
-    return path;
-}
 
-vector<int> Graph::getPathNodes(const int& src, int dest) {
-    if (nodes[dest].predecessor == 0) return {};
-    vector<int> path;
-    do {
-        path.push_back(dest);
-        dest = nodes[dest].predecessor;
-    } while (dest != 0);
-    reverse(path.begin(), path.end());
-    return path;
-}
 
-/*
-int Graph::comparePaths(vector<Trip> s11, vector<Trip> s12)
-{
-    if (getPathCapacity(s11) >= getPathCapacity(s12)
-    && getPathTranshipments(s11) <= getPathTranshipments(s12)) return 1;
 
-    if (getPathCapacity(s12) > getPathCapacity(s11)
-        && getPathTranshipments(s12) < getPathTranshipments(s11)) return 2;
-    return 0;
-}
-*/
-
-int Graph::getPathCapacity(vector<Trip> path)
-{
-    int capacity;
-    for (int t = 0; t < path.size(); t++) {
-        if (t == 0) capacity = path[t].capacity;
-        else if (path[t].capacity < capacity) capacity = path[t].capacity;
-    }
-    return capacity;
-}
-
-int Graph::getPathTranshipments(vector<Trip> path)
-{
-    return path.size();
-}
-
-int Graph::getSize() {
-    return size;
-}
-
+/* Scenario 2.4 */
 
 Path Graph::minDuration(Path path, const int& src, const int& dest) {
     queue<int> q;
     set<int> pathNodes;
 
     for (auto t: path.getTrips()) {
-       pathNodes.insert(t.src);
-       pathNodes.insert(t.dest);
+        pathNodes.insert(t.src);
+        pathNodes.insert(t.dest);
     }
 
     for (int i = 1; i < nodes.size(); i++) {
         nodes[i].predecessor = 0;
         nodes[i].degree = 0;
+        nodes[i].slowest_time = 0;
     }
     for (auto n: nodes) {
         for (auto e: n.adj) {
             nodes[e.dest].degree += 1;
-       }
+        }
     }
     for (int i = 1; i < nodes.size(); i++) {
         if (nodes[i].degree == 0) q.push(i);
@@ -300,26 +285,32 @@ Path Graph::minDuration(Path path, const int& src, const int& dest) {
         v = q.front();
         q.pop();
 
-        if (dur_min < nodes[v].es)
-            dur_min = nodes[v].es;
+        if (dur_min < nodes[v].slowest_time)
+            dur_min = nodes[v].slowest_time;
 
         for (auto e: nodes[v].adj) {
             if (pathNodes.find(e.dest) != pathNodes.end()) {
-                if (nodes[e.dest].es < (nodes[v].es + e.duration)) {
-                    nodes[e.dest].es = nodes[v].es + e.duration;
+                if (nodes[e.dest].slowest_time < (nodes[v].slowest_time + e.duration)) {
+                    nodes[e.dest].slowest_time = nodes[v].slowest_time + e.duration;
                     nodes[e.dest].predecessor = v;
                 }
             }
-                nodes[e.dest].degree += -1;
-                if (nodes[e.dest].degree == 0) q.push(e.dest);
+            nodes[e.dest].degree += -1;
+            if (nodes[e.dest].degree == 0) q.push(e.dest);
         }
     }
 
     Path path_result = getPath(src, dest);
-    path_result.getMinTime() = dur_min;
+    path_result.setMinTime(dur_min);
 
     return path_result;
 }
+
+
+
+
+
+/* Scenario 2.5 */
 
 Path Graph::maxDuration(Path path, const int& src, const int& dest) {
     queue<int> q;
@@ -342,7 +333,7 @@ Path Graph::maxDuration(Path path, const int& src, const int& dest) {
     /* algorithm begins */
     for (int i = 1; i < nodes.size(); i++) {
         nodes[i].predecessor = 0;
-        nodes[i].es = 0;
+        nodes[i].slowest_time = 0;
         nodes[i].degree = 0;
         nodes[i].waiting_time = 0;
     }
@@ -370,10 +361,10 @@ Path Graph::maxDuration(Path path, const int& src, const int& dest) {
 
         for (auto e: nodes[v].adj) {
             if (pathNodes.find(e.dest) != pathNodes.end()) {
-                if (nodes[e.dest].es < (nodes[v].es + e.duration)) {
-                    nodes[e.dest].es = nodes[v].es + e.duration;
+                if (nodes[e.dest].slowest_time < (nodes[v].slowest_time + e.duration)) {
+                    nodes[e.dest].slowest_time = nodes[v].slowest_time + e.duration;
                     nodes[e.dest].predecessor = v;
-                    nodes[e.dest].waiting_time = nodes[e.dest].es - nodes[e.dest].ls;
+                    nodes[e.dest].waiting_time = nodes[e.dest].slowest_time - nodes[e.dest].fastest_time;
                 }
             }
             nodes[e.dest].degree += -1;
@@ -382,13 +373,41 @@ Path Graph::maxDuration(Path path, const int& src, const int& dest) {
     }
 
     Path path_result = getPath(src, dest);
-    path_result.getWaitingTime() = max_waiting_time;
+    path_result.setWaitingTime(max_waiting_time);
 
     /* find nodes with maximum waiting time */
     for (int i = 1; i < nodes.size(); i++) {
         if (nodes[i].waiting_time == max_waiting_time)
-            path_result.get_waiting_time_nodes().push_back(i);
+            path_result.add_waiting_time_node(i);
     }
 
     return path_result;
+}
+
+Path Graph::dijkstraPath(const int &src, const int &dest) {
+    for (int i=1;i<=size;i++){
+        nodes[i].fastest_time = INT_MAX;
+        nodes[i].visited = false;
+        nodes[i].predecessor = 0;
+    }
+    nodes[src].fastest_time = 0;
+    MinHeap<int,int> h (size,-1);
+    h.insert(src, nodes[src].distance);
+    while(h.getSize()>0){
+        int x = h.removeMin();
+        nodes[x].visited = true;
+        for (Edge e: nodes[x].adj){
+            if (!nodes[e.dest].visited
+                && nodes[e.dest].fastest_time > nodes[x].fastest_time + e.duration) {
+                nodes[e.dest].fastest_time = nodes[x].fastest_time + e.duration;
+                nodes[e.dest].predecessor = x;
+                if (!h.hasKey(e.dest)) {
+                    h.insert(e.dest, nodes[e.dest].fastest_time);
+                } else {
+                    h.decreaseKey(e.dest, nodes[e.dest].fastest_time);
+                }
+            }
+        }
+    }
+    return getPath(src, dest);
 }

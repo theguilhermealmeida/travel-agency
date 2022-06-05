@@ -19,7 +19,10 @@ class Scenery2State : public State {
     * Scenario 2.2 - Get the path with maximum flow for a given group dimension.
     * The group splits up.
     * @param app Pointer to main application.
-    * @param residual Matrix of adjacency's where the residual graph will be stored.
+    * @param src Source node.
+    * @param dest Destination node.
+    * @param flow Flow of path.
+    * @param dimension Dimension of path.
     */
    void display22(App *app, const int& src, const int& dest, const int& flow, int dimension);
 

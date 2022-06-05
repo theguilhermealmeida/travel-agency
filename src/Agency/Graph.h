@@ -68,7 +68,7 @@ public:
    Path bfsPath(const int& src, const int& dest);
 
    /**
-    * Uses the algorithm of Dijkstra to find the shortest path (less distance).
+    * Uses the algorithm of Dijkstra to find the fastest path (less duration).
     * The algorithm of Dijkstra's time complexity is O(E log|V|).
     * @param src The starting node.
     * @param dest The destination node.
@@ -84,14 +84,6 @@ public:
     * @return A Path object that represent a path from src to dest.
     */
    Path minmaxPath(const int& src, const int& dest);
-
-    /**
-     * Checks which path solution is better.
-     * @param s11 first path solution.
-     * @param s12 second path solution.
-     * @return Returns '0' if pareto-optimal (non comparable). '1' if first solution is better, '2' if second solution is better.
-     */
-    int comparePaths(vector<Trip> s11, vector<Trip> s12);
 
    /**
     * Get the maximum flow for the graph using the Ford-Fulkerson method.
@@ -126,11 +118,30 @@ public:
     * @param dimension Optional: The group's dimension. This acts as a delimiter.
     * @return Path with all the trips taken and respective flow.
     */
-   Path maxFlowFromPath(const int& src, const int& dest, vector<vector<int> >& residual, int flow,int dimension = INT_MAX);
+   Path maxFlowFromPath(const int& src, const int& dest, vector<vector<int> >& residual, int flow, int dimension = INT_MAX);
 
+   /**
+    * Get the minimal duration of a path.
+    * @param path Path to calculate minimal duration.
+    * @param src Source node.
+    * @param dest Destination node.
+    * @return
+    */
     Path minDuration(Path path, const int& src, const int& dest);
+
+    /**
+     * Get the maximum waiting time in the path and the respective nodes.
+     * @param path Path to calculate maximum waiting time.
+     * @param src Source node.
+     * @param dest Destination node.
+     * @return
+     */
     Path maxDuration(Path path, const int &src, const int &dest);
 
+    /**
+     * Getter for size of graph.
+     * @return Size of graph.
+     */
     int getSize();
 
 private:
@@ -160,11 +171,13 @@ private:
     */
    Path getPathFromResidual(const vector<vector<int> >& residual, const int& flow);
 
+   /**
+    * Get the nodes that belong to a path.
+    * @param src Source node.
+    * @param dest Destination Node.
+    * @return Vector with path nodes.
+    */
     vector<int> getPathNodes(const int& src, int dest);
-
-    int getPathCapacity(vector<Trip> path);
-
-    int getPathTranshipments(vector<Trip> path);
 
     struct Edge {
        int dest;
@@ -174,13 +187,12 @@ private:
 
     struct Node {
        list<Edge> adj;
-       list<Edge> residual_adj;
        bool visited;
         int distance;
         int predecessor;
         int degree;
-        int es; // earliest start
-        int ls; // latest start
+        int slowest_time;
+        int fastest_time;
         int waiting_time;
     };
 

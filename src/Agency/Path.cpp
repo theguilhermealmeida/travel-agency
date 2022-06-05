@@ -43,14 +43,26 @@ void Path::printTrips() const {
     }
 }
 
-vector<int>& Path::get_waiting_time_nodes() {
+vector<int> Path::get_waiting_time_nodes() {
     return waiting_time_nodes;
 }
 
-int& Path::getWaitingTime() {
+void Path::add_waiting_time_node(int node) {
+    waiting_time_nodes.push_back(node);
+}
+
+int Path::getWaitingTime() {
     return waiting_time;
 }
 
-int& Path::getMinTime() {
+int Path::getMinTime() {
     return min_time;
+}
+
+void Path::setWaitingTime(int waiting_time) {
+   this->waiting_time = waiting_time;
+}
+
+void Path::setMinTime(int min_time) {
+    this->min_time = min_time;
 }
