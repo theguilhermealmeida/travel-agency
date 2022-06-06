@@ -2,7 +2,7 @@
 
 App::App()
 {
-    settings.file_path = "../data/test.txt";
+    settings.file_path = "../data/in07.txt";
     agency = new Agency(settings.file_path);
 }
 

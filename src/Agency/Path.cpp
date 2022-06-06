@@ -4,6 +4,7 @@ Path::Path() {
     capacity = INT_MAX;
     duration = 0;
     flow = INT_MAX;
+    waiting_time = 0;
 }
 
 vector<Trip> Path::getTrips() const {
@@ -30,6 +31,7 @@ void Path::printInfo() const {
     cout << "Duration: " << duration << endl;
     cout << "Flux: " << flow << endl;
     cout << "Trips: " << trips.size() << endl;
+    cout << "Transhipments " << trips.size() - 1 << endl;
 }
 
 void Path::printTrips() const {
@@ -39,4 +41,28 @@ void Path::printTrips() const {
         cout << "   flux: " << trip.flow << "\n";
         cout << "   duration: " << trip.duration << "\n\n";
     }
+}
+
+vector<int> Path::get_waiting_time_nodes() {
+    return waiting_time_nodes;
+}
+
+void Path::add_waiting_time_node(int node) {
+    waiting_time_nodes.push_back(node);
+}
+
+int Path::getWaitingTime() {
+    return waiting_time;
+}
+
+int Path::getMinTime() {
+    return min_time;
+}
+
+void Path::setWaitingTime(int waiting_time) {
+   this->waiting_time = waiting_time;
+}
+
+void Path::setMinTime(int min_time) {
+    this->min_time = min_time;
 }

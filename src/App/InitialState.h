@@ -8,6 +8,10 @@
 #include "ChooseSceneryState.h"
 
 class InitialState : public State {
+    /**
+    * Handle the specific in the initial state.
+    * @param app Pointer to the main application.
+    */
    void step(App* app) override;
 };
 

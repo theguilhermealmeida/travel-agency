@@ -8,6 +8,10 @@
 #include "Scenery1State.h"
 
 class ChooseSceneryState : public State {
+    /**
+    * Handle the specific events in the choose scenario state.
+    * @param app Pointer to the main application.
+    */
     void step(App* app) override;
 };
 

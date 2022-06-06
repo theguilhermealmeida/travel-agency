@@ -24,6 +24,15 @@ Path Agency::scenario23(const int& src, const int& dest) {
     return network.maxFlow(src, dest);
 }
 
+Path Agency::scenario24(const int& src, const int& dest) {
+    Path s23 = scenario23(src, dest);
+    return network.minDuration(s23, src, dest);
+}
+
+Path Agency::scenario25(const int& src, const int& dest) {
+    Path s23 = scenario23(src, dest);
+    return network.maxDuration(s23, src, dest);
+}
 
 int Agency::getGraphSize() {
    return network.getSize();
