@@ -3,7 +3,8 @@
 void InitialState::step(App* app) {
    printBreak();
 
-   std::cout << "\tHello World!\n\n";
+   std::cout << "\tTravel Agency\n\n";
+   std::cout << "2) Start\n";
    std::cout << "1) Settings\n";
    std::cout << "0) Exit\n";
 
@@ -12,6 +13,9 @@ void InitialState::step(App* app) {
        int option = readOption(app);
 
        switch (option) {
+           case 2:
+               app->setState(new ChooseSceneryState());
+               return;
            case 1:
                app->setState(new SettingsState());
                return;

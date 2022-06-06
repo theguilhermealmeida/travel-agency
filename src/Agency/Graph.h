@@ -12,10 +12,14 @@
 #include <algorithm>
 #include <fstream>
 #include <sstream>
+#include <cstring>
 
 #include "minHeap.h"
+#include "Path.h"
 
 using namespace std;
+
+typedef pair<int, int> intPair;
 
 class Graph {
 
@@ -59,42 +63,141 @@ public:
     * The bfs' time complexity is O(V + E) and after that its O(n) to get the path.
     * @param src The starting node.
     * @param dest The destination node.
-    * @return A vector of integers that represent a path from src to dest.
+    * @return A Path object with the path taken by BFS.
     */
-   vector<int> bfsPath(const int& src, const int& dest);
+   Path bfsPath(const int& src, const int& dest);
 
    /**
-    * Uses the algorithm of Dijkstra to find the shortest path (less distance).
+    * Uses the algorithm of Dijkstra to find the fastest path (less duration).
     * The algorithm of Dijkstra's time complexity is O(E log|V|).
     * @param src The starting node.
     * @param dest The destination node.
-    * @return A vector of integers that represent a path from src to dest.
+    * @return A Path object with the path from src to dest.
     */
-   vector<int> dijkstraPath(const int& src, const int& dest);
+   Path dijkstraPath(const int& src, const int& dest);
+
+   /**
+    * Uses a variation of the algorithm of Dijkstra to find the path with maximum capacity.
+    * The algorithm of Dijkstra's time complexity is O(E log|V|).
+    * @param src The starting node.
+    * @param dest The destination node.
+    * @return A Path object that represent a path from src to dest.
+    */
+   Path minmaxPath(const int& src, const int& dest);
+
+   /**
+    * Get the maximum flow for the graph using the Ford-Fulkerson method.
+    * //TODO add time complexity
+    * @param src The starting node.
+    * @param dest The destination node.
+    * @param dimension Optional: The group's dimension. This acts as a delimiter.
+    * @return Path with all the trips taken and respective flow.
+    */
+   Path maxFlow(const int& src, const int& dest, int dimension = INT_MAX);
+
+   /**
+    * Get the maximum flow for the graph using the Ford-Fulkerson method.
+    * This method stores the residual graph in an adjacency matrix;
+    * //TODO add time complexity
+    * @param src The starting node.
+    * @param dest The destination node.
+    * @param residual Matrix of adjacency's where the residual graph will be stored.
+    * @param dimension Optional: The group's dimension. This acts as a delimiter.
+    * @return Path with all the trips taken and respective flow.
+    */
+   Path maxFlow(const int& src, const int& dest, vector<vector<int> >& residual, int dimension = INT_MAX);
+
+   /**
+    * Get the maximum flow for the graph using the Ford-Fulkerson method and starting with an
+    * already filled residual graph.
+    * //TODO add time complexity
+    * @param src The starting node.
+    * @param dest The destination node.
+    * @param residual Already filled adjacency matrix. The flow will be calculated from this data.
+    * @param flow Current flow considering already filled path.
+    * @param dimension Optional: The group's dimension. This acts as a delimiter.
+    * @return Path with all the trips taken and respective flow.
+    */
+   Path maxFlowFromPath(const int& src, const int& dest, vector<vector<int> >& residual, int flow, int dimension = INT_MAX);
+
+   /**
+    * Get the minimal duration of a path.
+    * @param path Path to calculate minimal duration.
+    * @param src Source node.
+    * @param dest Destination node.
+    * @return
+    */
+    Path minDuration(Path path, const int& src, const int& dest);
+
+    /**
+     * Get the maximum waiting time in the path and the respective nodes.
+     * @param path Path to calculate maximum waiting time.
+     * @param src Source node.
+     * @param dest Destination node.
+     * @return
+     */
+    Path maxDuration(Path path, const int &src, const int &dest);
+
+    /**
+     * Getter for size of graph.
+     * @return Size of graph.
+     */
+    int getSize();
 
 private:
+
    /**
+    * Uses breadth-first search to find the shortest path (less nodes) in the residual graph.
+    * The bfs' time complexity is O(V + E) and after that its O(n) to get the path.
+    * This method computes the bfs from an adjacency matrix, previously created.
+    * @param src The starting node.
+    * @param dest The destination node.
+    * @return A vector of nodes taken from src to dest.
+    */
+   vector<int> bfsAdjacencyPath(const int& src, const int& dest, vector<vector<int> > graph);
+    /**
     * Makes a path vector from each node's predecessor. Time complexity is O(n).
     * @param src The starting node.
     * @param dest The destination node.
     * @return Returns a vector of the path taken from src to dest.
     */
-   vector<int> getPath(const int& src, int dest);
+   Path getPath(const int& src, int dest);
 
-   struct Edge {
+    /**
+    * Create a path from a residual network.
+    * @param residual Adjacency matrix representing the residual graph.
+    * @param flow Maximum flow achieved through the path.
+    * @return Path with all the trips taken and respective flow.
+    */
+   Path getPathFromResidual(const vector<vector<int> >& residual, const int& flow);
+
+   /**
+    * Get the nodes that belong to a path.
+    * @param src Source node.
+    * @param dest Destination Node.
+    * @return Vector with path nodes.
+    */
+    vector<int> getPathNodes(const int& src, int dest);
+
+    struct Edge {
        int dest;
        int capacity;
        int duration;
    };
 
-   struct Node {
+    struct Node {
        list<Edge> adj;
        bool visited;
-       int distance;
-       int predecessor;
-   };
+        int distance;
+        int predecessor;
+        int degree;
+        int slowest_time;
+        int fastest_time;
+        int waiting_time;
+    };
 
-   vector<Node> nodes;
+    vector<Node> nodes;
+
    int size;
 };
 

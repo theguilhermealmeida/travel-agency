@@ -36,6 +36,12 @@ public:
    struct appSettings getSettings() const;
 
    /**
+    * Change the input file of the program.
+    * @param path A valid .txt file path.
+    */
+   void changeFile(string path);
+
+   /**
     * Change the app's current state.
     * @param state Any state derived class.
     */

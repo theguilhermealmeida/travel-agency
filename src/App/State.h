@@ -58,7 +58,16 @@ protected:
     */
    void displayTable(std::vector<std::vector<std::string> >& table, int page) const;
 
+   /**
+    * Go to a separate page that displays all the trips from the same path.
+    * @param app Pointer to main application.
+    * @param path Path object to be displayed.
+    */
+   void displayTrips(App* app, const Path& path);
+
+    void chooseSrcDest(App *app, int &src, int &dest);
 private:
+
    /**
     * Get the next page for a table display.
     * @param app Pointer to the main application.
@@ -66,6 +75,8 @@ private:
     * @param max_page Maximum number of pages.
     */
    void getNextPage(App* app, int& page, const int& max_page) const;
+
+    void checkNode(App *app, int &node, string src_dest);
 };
 
 
