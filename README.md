@@ -13,4 +13,4 @@ This project was part of the Algorithmic design course unit @ FEUP. The idea was
 
 <br>
 
-*April of 2022*
+*June of 2022*
